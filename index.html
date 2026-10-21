@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><title>NutriTrack V2</title><style>
+:root{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#24262b;background:#f5f5f7}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:510px;margin:auto;min-height:100dvh;padding:28px 19px 104px}.eyebrow{font-size:10px;letter-spacing:2px;color:#9999a5;font-weight:700}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}h1{font-size:34px;letter-spacing:-1.4px;margin:5px 0 3px;font-weight:750}h2{font-size:20px;letter-spacing:-.6px;margin:25px 0 13px}.muted{color:#93939f;font-size:12px}.date{border:0;background:white;border-radius:16px;padding:12px;color:#444;max-width:155px}.card{background:white;border-radius:25px;padding:23px;margin-bottom:13px;box-shadow:0 5px 22px #23233b05}.card-title{display:flex;justify-content:space-between;font-size:14px;font-weight:700}.rings{position:relative;width:240px;height:240px;margin:15px auto 8px}.rings svg{width:100%;height:100%;transform:rotate(-90deg)}.center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}.big{font-size:36px;letter-spacing:-1.4px;font-weight:760}.mini{font-size:11px;color:#9999a3}.metrics{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #e9eaed;padding-top:18px;margin-top:16px;text-align:center}.metric{border-right:1px solid #e9eaed}.metric:last-child{border:0}.dot{height:5px;width:23px;border-radius:8px;margin:0 auto 9px}.metric b{display:block;font-size:18px;margin:4px}.metric span{font-size:10px;color:#8d8d99}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.item{display:flex;gap:13px;align-items:center;padding:12px 0;border-bottom:1px solid #e9eaed}.item:last-child{border:0}.ico{background:#eef0f2;color:#505761;width:43px;height:43px;display:grid;place-items:center;border-radius:14px;font-size:21px}.item b{font-size:14px}.item p{margin:4px 0 0;font-size:12px;color:#9999a3}.right{text-align:right;margin-left:auto}.pill{background:#eef0f2;color:#444b54;border-radius:100px;padding:8px 13px;font-weight:650;font-size:12px}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:510px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);background:#ffffffed;backdrop-filter:blur(18px);border-top:1px solid #eee;padding:12px 10px calc(13px + env(safe-area-inset-bottom));z-index:10}.nav button{background:transparent;color:#9b9ba5;display:flex;align-items:center;flex-direction:column;gap:5px;font-size:11px}.nav button.active{color:#30343b;font-weight:750}.nav i{font-size:23px;font-style:normal}.hide{display:none!important}.field{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#777783;margin-bottom:12px}.field input,.field select{border:1px solid #ededf1;background:#f6f6f8;border-radius:12px;padding:12px;color:#30303a;width:100%;outline-color:#626a75}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}.primary{width:100%;background:#292d34;color:#fff;border-radius:15px;padding:14px;font-weight:750;margin-top:6px}.secondary{background:#f0f1f3;color:#676776;padding:9px 12px;border-radius:12px}.danger{color:#525a64;background:#eef0f2;padding:7px 10px;border-radius:10px}.empty{padding:22px;text-align:center;color:#a2a2ac;font-size:13px}.summary{font-size:13px;color:#8e8e99}.summary strong{font-size:26px;color:#24262b}.chart{display:flex;align-items:flex-end;gap:9px;height:130px;border-bottom:1px solid #eee;padding-top:12px}.barwrap{flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;height:100%;gap:6px}.bar{width:65%;border-radius:8px 8px 0 0;background:#606670;min-height:3px}.barwrap small{font-size:9px;color:#999}.notice{font-size:11px;color:#aaa;line-height:1.5;margin-top:12px}.tabs{display:flex;gap:7px;margin:12px 0}.tabs button{background:#edeef0;color:#898995;border-radius:20px;padding:8px 12px}.tabs button.on{background:#e5e8ec;color:#424a54}.smalltext{font-size:12px;color:#999}.section-head{display:flex;align-items:center;justify-content:space-between}input[type=date]{min-width:0} @media(min-width:600px){body{background:#eeeeF3}.app{background:#f5f5f7;box-shadow:0 0 50px #0000000b}}
+
+:root{--bg:#f5f5f7;--card:#fff;--ink:#24262b;--sub:#93939f;--line:#f0f0f3;--pink:#292d34}body.dark{--bg:#17171d;--card:#25252d;--ink:#f5f5f7;--sub:#a4a4b1;--line:#383840;--pink:#e4e6ea;background:var(--bg);color:var(--ink)}body{background:var(--bg);color:var(--ink)}.app{padding-bottom:95px}.card,.date{background:var(--card);color:var(--ink)}.item,.metrics{border-color:var(--line)}.item p,.muted,.smalltext{color:var(--sub)}.nav{width:min(calc(100% - 32px),410px);bottom:calc(10px + env(safe-area-inset-bottom));border:1px solid var(--line);border-radius:22px;padding:7px 8px;box-shadow:0 8px 28px #1e1e3517;background:var(--card);grid-template-columns:repeat(5,1fr)}.nav button{gap:2px;font-size:9px;min-height:43px;color:var(--sub)}.nav i{font-size:18px}.nav button.active{color:#30343b}.field input,.field select,.field textarea{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px;width:100%}.field textarea{min-height:70px}.secondary{background:var(--bg);color:var(--ink)}.card-title{gap:10px;align-items:center}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{font-size:11px}.compact{padding:14px 18px}.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kpis .card{margin:0}.kpis b{display:block;font-size:19px;margin-top:5px}.progress{height:6px;border-radius:20px;background:var(--line);overflow:hidden;margin:7px 0}.progress>div{height:100%;border-radius:20px}.tag{font-size:10px;border-radius:8px;padding:5px 8px;background:#e9ecef;color:#525a64}.daygrid{overflow:auto}.daygrid table{width:100%;border-collapse:collapse;font-size:11px;min-width:410px}.daygrid th,.daygrid td{text-align:right;padding:10px 5px;border-bottom:1px solid var(--line)}.daygrid th:first-child,.daygrid td:first-child{text-align:left}.tiny{font-size:11px;color:var(--sub)}.inline-select{max-width:100%;width:100%}.modebtn{border-radius:12px;padding:8px 10px;background:var(--card);color:var(--ink)}.head{gap:10px}.date{max-width:138px;font-size:12px}.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#24262b;color:#fff;border-radius:16px;padding:13px 20px;z-index:50;box-shadow:0 8px 30px #0002;max-width:90%;text-align:center}.empty{color:var(--sub)}.primary{background:var(--pink)}.pill{background:#eef0f2}.muted-label{font-size:12px;color:var(--sub)}.fieldrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}@media(max-width:380px){.rings{width:210px;height:210px}.app{padding-left:14px;padding-right:14px}.card{padding:18px}.date{max-width:125px}.nav{width:calc(100% - 20px)}}
+.nav .nav-icon{width:21px;height:21px;display:block;flex-shrink:0}.nav button{gap:4px}.nav{max-width:390px} 
+/* NutriTrack V2 — monochrome design system */
+:root{--bg:#f5f5f7;--card:#fff;--ink:#22252b;--sub:#82858c;--line:#e8e9ec;--pink:#292d34;--accent:#292d34;--accent-ink:#fff}
+body.dark{--bg:#111216;--card:#1e2025;--ink:#f3f4f6;--sub:#a3a7b0;--line:#373a41;--pink:#e4e6ea;--accent:#e4e6ea;--accent-ink:#1c1e23}
+.primary{background:var(--accent);color:var(--accent-ink);box-shadow:none}
+.pill{background:#e9eaed;color:#353940}
+.nav button.active{color:var(--ink)}
+.nav{box-shadow:0 8px 25px #14171c13}
+.ico{background:#ebedf0;color:#444b54}
+.danger{background:#eff0f2;color:#42464e}
+.tag{background:#e9eaed;color:#41454d}
+.tabs button.on{background:#e1e3e7;color:#292d34}
+.field input:focus,.field select:focus,.field textarea:focus{outline-color:#767b85}
+.bar{background:#6f747d}
+.dot{filter:grayscale(1)}
+body.dark .pill,body.dark .ico,body.dark .danger,body.dark .tag,body.dark .tabs button.on{background:#32353c;color:#e8e9ed}
+body.dark .nav button.active{color:#f4f5f6}
+body.dark .rings svg circle:not([id]){stroke:#383b42}
+body.dark .metric{border-color:var(--line)}
+
+/* Theme palette selector: shared tokens for all pages and light/dark modes */
+:root{--ring1:#292d34;--ring2:#777d87;--ring3:#adb2ba;--soft-accent:#eef0f2}
+body[data-palette="mono"]{--accent:#292d34;--pink:#292d34;--ring1:#292d34;--ring2:#777d87;--ring3:#adb2ba;--soft-accent:#f5f5f7;--bg:#f5f5f7}
+body.dark[data-palette="mono"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#777d87;--pink:#777d87;--accent-ink:#121418;--ring1:#292d34;--ring2:#777d87;--ring3:#adb2ba;--soft-accent:#30343a}
+body[data-palette="sage"]{--accent:#658b78;--pink:#658b78;--ring1:#658b78;--ring2:#99b5a4;--ring3:#c3d6c9;--soft-accent:#f2f6f2;--bg:#f2f6f2}
+body.dark[data-palette="sage"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#99b5a4;--pink:#99b5a4;--accent-ink:#121418;--ring1:#658b78;--ring2:#99b5a4;--ring3:#c3d6c9;--soft-accent:#30343a}
+body[data-palette="cream"]{--accent:#b88768;--pink:#b88768;--ring1:#b88768;--ring2:#d3ab91;--ring3:#e2cbb4;--soft-accent:#faf7f1;--bg:#faf7f1}
+body.dark[data-palette="cream"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#d3ab91;--pink:#d3ab91;--accent-ink:#121418;--ring1:#b88768;--ring2:#d3ab91;--ring3:#e2cbb4;--soft-accent:#30343a}
+body[data-palette="lavender"]{--accent:#8d79ba;--pink:#8d79ba;--ring1:#8d79ba;--ring2:#b0a0d0;--ring3:#d0c3e4;--soft-accent:#f7f5fb;--bg:#f7f5fb}
+body.dark[data-palette="lavender"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#b0a0d0;--pink:#b0a0d0;--accent-ink:#121418;--ring1:#8d79ba;--ring2:#b0a0d0;--ring3:#d0c3e4;--soft-accent:#30343a}
+body[data-palette="blue"]{--accent:#6886ac;--pink:#6886ac;--ring1:#6886ac;--ring2:#93aac4;--ring3:#c0cfdf;--soft-accent:#f3f6fa;--bg:#f3f6fa}
+body.dark[data-palette="blue"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#93aac4;--pink:#93aac4;--accent-ink:#121418;--ring1:#6886ac;--ring2:#93aac4;--ring3:#c0cfdf;--soft-accent:#30343a}
+body[data-palette="rose"]{--accent:#c17e95;--pink:#c17e95;--ring1:#c17e95;--ring2:#d9a7b7;--ring3:#edcbd5;--soft-accent:#fcf6f8;--bg:#fcf6f8}
+body.dark[data-palette="rose"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#d9a7b7;--pink:#d9a7b7;--accent-ink:#121418;--ring1:#c17e95;--ring2:#d9a7b7;--ring3:#edcbd5;--soft-accent:#30343a}
+body[data-palette="mint"]{--accent:#4e9b8c;--pink:#4e9b8c;--ring1:#4e9b8c;--ring2:#84bcb0;--ring3:#b7dcd3;--soft-accent:#f2f9f7;--bg:#f2f9f7}
+body.dark[data-palette="mint"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#84bcb0;--pink:#84bcb0;--accent-ink:#121418;--ring1:#4e9b8c;--ring2:#84bcb0;--ring3:#b7dcd3;--soft-accent:#30343a}
+body[data-palette="terracotta"]{--accent:#b87556;--pink:#b87556;--ring1:#b87556;--ring2:#d6a088;--ring3:#e8c4b3;--soft-accent:#faf5f0;--bg:#faf5f0}
+body.dark[data-palette="terracotta"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#d6a088;--pink:#d6a088;--accent-ink:#121418;--ring1:#b87556;--ring2:#d6a088;--ring3:#e8c4b3;--soft-accent:#30343a}
+.app{background:var(--bg)}.primary{background:var(--accent);color:var(--accent-ink)}
+.pill,.tag,.ico,.danger,.tabs button.on{background:var(--soft-accent);color:var(--ink)}
+.nav button.active{color:var(--accent)!important}.bar{background:var(--ring1)}
+#calRing{stroke:var(--ring1)}#proteinRing{stroke:var(--ring2)}#fiberRing{stroke:var(--ring3)}
+.rings .metric{border-color:var(--line)}.rings svg circle:not([id]){stroke:var(--line)}
+body.dark .rings svg circle:not([id]){stroke:var(--line)}
+.metrics .metric:nth-child(1) .dot{background:var(--ring1)!important}.metrics .metric:nth-child(2) .dot{background:var(--ring2)!important}.metrics .metric:nth-child(3) .dot{background:var(--ring3)!important}.dot{filter:none}
+.palette-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 5px;margin-top:12px}
+.palette-option{border:1px solid transparent;border-radius:14px;padding:9px 2px 7px;background:transparent;color:var(--ink);text-align:center;min-width:0;display:flex;align-items:center;flex-direction:column;gap:6px;cursor:pointer;transition:background .15s ease}
+.palette-option[aria-pressed="true"]{background:var(--soft,var(--line));border-color:var(--line)}
+.palette-option:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.palette-swatches{display:block;position:relative;width:37px;height:37px;border-radius:50%;overflow:hidden;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+.palette-swatches i{display:block;position:absolute;border:0;border-radius:0;width:100%;height:100%;inset:0}
+.palette-swatches i:nth-child(1){clip-path:polygon(0 0,100% 0,0 100%)}
+.palette-swatches i:nth-child(2){clip-path:polygon(100% 0,100% 100%,0 100%)}
+.palette-swatches i:nth-child(3){clip-path:polygon(0 100%,100% 100%,50% 50%)}
+.palette-option .palette-name{font-size:10px;font-weight:600;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+.palette-option .palette-check{position:absolute;right:-3px;bottom:-3px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;background:var(--accent);color:var(--card);font-size:10px;font-weight:800;border:2px solid var(--card)}
+.palette-preview{position:relative;width:37px;height:37px}
+@media(max-width:360px){.palette-grid{gap:5px 2px}.palette-option{padding:7px 1px}.palette-option .palette-name{font-size:9px}}
+.settings-entry{display:flex;align-items:center;gap:12px;width:100%;padding:12px 0;background:transparent;color:var(--ink);font-size:14px;font-weight:650;text-align:left}.settings-entry-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:var(--soft-accent);color:var(--accent);font-size:21px}.settings-chevron{font-size:24px;color:var(--sub);font-weight:400;margin-left:auto}.settings-entry-right{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--sub);font-size:12px;font-weight:400}.settings-entry-right .settings-chevron{margin-left:3px}.palette-current-dot{width:14px;height:14px;border-radius:50%}.settings-back{display:block;background:transparent;color:var(--accent);padding:3px 2px 16px;font-size:15px;font-weight:600}.settings-back span{vertical-align:middle}#settingsPanel .card-title{margin-bottom:12px}#settingsPanel .item{justify-content:space-between}#settingsPanel .settings-entry{border-top:1px solid var(--line);margin-top:4px}#palettePanel .card{margin-top:0}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+
+/* Compact food record actions: calories before right-aligned vertical menu */
+#foodList .item > div:first-child{min-width:0;flex:1}
+#foodList .food-record-actions{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:9px;margin-left:auto;flex-shrink:0;text-align:right}
+#foodList .food-calories{white-space:nowrap;font-size:13px}
+#foodList .food-record-actions .item-menu{margin-left:0;flex-shrink:0}
+#foodList .food-record-actions .item-menu>summary{width:30px!important;height:30px!important}
+/* Save left, cancel right, in the same row only when editing */
+.food-form-actions{display:flex;align-items:stretch;gap:12px;width:100%;margin-top:6px}
+.food-form-actions #foodSubmit{flex:1;min-width:0;width:auto;margin-top:0}
+.food-form-actions #foodCancel:not(.hide){display:block;flex:1;min-width:0;text-align:center;font-weight:650}
+
+/* Header date fine alignment: move date text right and calendar arrow left */
+#day.date{padding-left:20px!important;padding-right:17px!important;}
+#day.date::-webkit-calendar-picker-indicator{position:relative!important;left:-7px!important;margin-right:0!important;}
+@media(max-width:380px){#day.date{padding-left:16px!important;padding-right:15px!important;}#day.date::-webkit-calendar-picker-indicator{left:-5px!important;}}
+</style><style>
+/* Unified move groups and refined appearance */
+.widget-group{position:relative;margin-bottom:14px}
+.widget-group>.section-head{margin:0 0 12px;padding:0 2px}
+.widget-group>.card{margin:0}
+.layout-editing .widget-group{padding:40px 4px 4px;border-radius:22px}
+.layout-editing .widget-group>.layout-controls{top:5px;right:7px}
+.layout-editing .widget-group>.section-head{padding-right:0}
+.layout-editing .layout-movable:not(.widget-group){padding-top:38px}
+#themeBtn{display:inline-flex;align-items:center;justify-content:center;min-width:36px;min-height:36px;padding:8px}
+#themeBtn svg{display:block;flex-shrink:0}
+/* Compact per-page card ordering controls */
+.layout-toolbar{display:flex;justify-content:flex-end;align-items:center;gap:9px;margin:0 0 10px;padding:0 2px}
+.layout-toggle{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;padding:7px 12px;font-size:12px;font-weight:650}
+.layout-hint{font-size:11px;color:var(--sub)}
+.layout-controls{display:none;position:absolute;right:10px;top:9px;gap:5px;z-index:2}
+.layout-editing .layout-movable{position:relative;outline:1px dashed var(--line);outline-offset:2px}
+.layout-editing .layout-movable>.layout-controls{display:flex}
+.layout-controls button{width:30px;height:28px;border-radius:9px;background:var(--card);color:var(--ink);border:1px solid var(--line);font-size:16px;line-height:1}
+.layout-editing .layout-movable>.card-title,.layout-editing .layout-movable>h2{padding-right:76px}
+.layout-editing .layout-movable{padding-top:40px}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+</style><style>
+/* Nutrition ring and four summary metrics are a single reorderable widget. */
+.nutrition-summary-group{display:flex;flex-direction:column;gap:12px}
+.nutrition-summary-group>.card{margin:0}
+.nutrition-summary-group>.kpis{margin:0}
+.layout-editing .nutrition-summary-group{padding:40px 4px 4px}
+.layout-editing .nutrition-summary-group>.layout-controls{top:5px;right:7px}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+</style>
+<style>
+/* Compact reorder widgets: toolbar after content, no oversized padding. */
+.layout-toolbar{margin:14px 0 8px!important;padding:0 4px!important}
+.layout-toggle{padding:7px 11px!important;font-size:12px!important}
+.layout-editing .layout-movable{padding-top:34px!important}
+.layout-editing .widget-group{padding:34px 0 0!important}
+.layout-editing .widget-group>.layout-controls{top:3px!important;right:6px!important}
+.layout-editing .layout-movable>.layout-controls{top:3px!important;right:6px!important}
+.layout-controls button{width:29px!important;height:27px!important;font-size:15px!important}
+.body-combined-group{display:flex;flex-direction:column;gap:10px}
+.body-combined-group>.card{margin:0!important}
+.food-library-details{width:100%}
+.food-library-button{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-weight:650;font-size:15px;min-height:25px}
+.food-library-button::-webkit-details-marker{display:none}
+.library-chevron{font-size:23px;font-weight:400;color:var(--sub);transition:transform .2s}
+.food-library-details[open] .library-chevron{transform:rotate(180deg)}
+.food-library-details[open] .food-library-button{padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+</style><style id="compact-action-menu-css">
+.item-menu{position:relative;flex-shrink:0;margin-left:6px}
+.item-menu>summary{list-style:none;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--surface,#f2f3f5);color:var(--text,#444);font-size:20px;line-height:1;cursor:pointer;font-weight:700;letter-spacing:1px}
+.item-menu>summary::-webkit-details-marker{display:none}
+.item-menu-popup{position:absolute;right:0;top:36px;z-index:30;min-width:112px;background:var(--card,#fff);border:1px solid var(--line,#e5e5e8);border-radius:12px;padding:5px;box-shadow:0 10px 25px #0002}
+.item-menu-popup button{display:block;width:100%;text-align:left;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--text,#333);font-size:13px}
+.item-menu-popup button.delete-action{color:#bd5260}
+.library-chevron{display:inline-flex;align-items:center;justify-content:center;transition:transform .2s}
+.food-library-details[open]>.food-library-button .library-chevron,.export-details[open]>.food-library-button .library-chevron{transform:rotate(90deg)}
+.chart{height:175px;padding-top:24px;overflow:visible}
+.barwrap{position:relative;gap:5px}
+.bar-value{font-size:9px;line-height:1.2;color:var(--sub,#777);white-space:nowrap;font-variant-numeric:tabular-nums}
+.barwrap .bar{max-height:108px}
+</style><style id="vertical-menu-and-library-spacing-fix">
+.item-menu>summary{width:32px!important;height:32px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;letter-spacing:normal!important;overflow:hidden!important;box-sizing:border-box!important}
+.item-menu>summary .vertical-more{display:block!important;width:19px!important;height:19px!important;flex-shrink:0!important}
+.item-menu>summary::marker{content:""}
+/* Give the food-library disclosure its own breathing room below the save button. */
+#presetForm + .food-library-details{margin-top:20px!important}
+#presetForm + .food-library-details>.food-library-button{padding-top:10px!important;padding-bottom:9px!important;min-height:43px!important}
+</style><style id="final-food-exercise-date-layout">
+/* Date icon: comfortable right-side spacing on Android Chrome */
+#day.date{padding-right:20px!important;min-width:0;box-sizing:border-box}
+#day.date::-webkit-calendar-picker-indicator{margin-right:3px;cursor:pointer}
+/* Food editing: cancel on the left, save on the right */
+.food-form-actions #foodCancel:not(.hide){order:0}
+.food-form-actions #foodSubmit{order:1}
+/* Exercise entries: calories before the far-right vertical menu */
+#exerciseList .item>div:first-child{min-width:0;flex:1}
+#exerciseList .exercise-record-actions{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:9px;margin-left:auto;flex-shrink:0;text-align:right}
+#exerciseList .exercise-calories{font-size:13px;white-space:nowrap}
+#exerciseList .exercise-record-actions .item-menu{margin-left:0;flex-shrink:0}
+#exerciseList .exercise-record-actions .item-menu>summary{width:30px!important;height:30px!important}
+
+/* Balanced home meal rows */
+#homeMeals{padding-top:6px;padding-bottom:6px}
+#homeMeals .home-meal-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;min-height:76px;padding:14px 0!important;margin:0!important}
+#homeMeals .home-meal-row .home-meal-info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px}
+#homeMeals .home-meal-row b{line-height:1.4}
+#homeMeals .home-meal-row p{margin:0!important;line-height:1.4}
+#homeMeals .home-meal-row .right{min-width:95px;text-align:right;align-self:center;white-space:nowrap}
+/* Date must remain fully visible; reserve room for native picker icon */
+.head{align-items:flex-start!important;gap:8px!important}
+.head>div:first-child{flex:1 1 auto;min-width:0}
+.head>div:last-child{flex:0 0 auto;min-width:0;align-items:flex-end}
+#day.date{display:block;width:157px!important;max-width:none!important;min-width:157px!important;min-height:44px;padding:10px 9px 10px 12px!important;font-size:12px!important;line-height:22px;letter-spacing:-.25px;border-radius:15px;overflow:visible}
+#day.date::-webkit-calendar-picker-indicator{margin:0 0 0 2px;padding:2px;width:16px;height:16px;opacity:.85}
+@media(max-width:380px){#day.date{width:150px!important;min-width:150px!important;font-size:11px!important}.head{gap:5px!important}.eyebrow{font-size:9px;letter-spacing:1px}}
+</style><style id="compact-bowel-exercise-date-v3">
+/* Space the saved bowel entries away from the entry form. */
+#bowelList{margin-top:18px!important}
+#bowelList .item:first-child{padding-top:8px}
+/* Compact exercise records while keeping touch-friendly menu controls. */
+#exerciseList .item{padding:8px 0!important;gap:8px!important;min-height:54px}
+#exerciseList .item b{font-size:13px!important}
+#exerciseList .item p{margin-top:2px!important;font-size:11px!important}
+#exerciseList .exercise-record-actions{gap:7px!important}
+#exerciseList .item-menu>summary{width:30px!important;height:30px!important}
+/* Reduce date field without clipping the text; pull native calendar affordance inward. */
+#day.date{width:145px!important;min-width:145px!important;max-width:145px!important;min-height:40px!important;padding:8px 10px!important;font-size:11px!important;letter-spacing:-.3px!important}
+#day.date::-webkit-calendar-picker-indicator{width:15px!important;height:15px!important;margin-right:5px!important;margin-left:0!important;padding:0!important}
+@media(max-width:380px){#day.date{width:140px!important;min-width:140px!important;max-width:140px!important;font-size:10.5px!important}}
+</style><style id="date-exercise-fine-tune-v4">
+/* Date: nudge date digits right while pulling picker arrow away from the far edge. */
+#day.date{width:148px!important;min-width:148px!important;max-width:148px!important;padding-left:18px!important;padding-right:15px!important;box-sizing:border-box!important}
+#day.date::-webkit-calendar-picker-indicator{margin-right:9px!important;margin-left:0!important;width:14px!important;height:14px!important;padding:0!important;flex-shrink:0!important}
+/* Saved exercise records only: compact the enclosing white card, not the input form. */
+#exerciseList.card{padding:8px 15px!important;border-radius:20px!important;margin-top:0!important}
+#exerciseList .item{min-height:45px!important;padding:5px 0!important;gap:8px!important}
+#exerciseList .item p{margin:1px 0 0!important;line-height:1.25!important}
+#exerciseList .item b{line-height:1.3!important}
+#exerciseList .exercise-record-actions{gap:9px!important}
+#exerciseList .item-menu>summary{width:30px!important;height:30px!important}
+@media(max-width:380px){#day.date{width:143px!important;min-width:143px!important;max-width:143px!important;padding-left:14px!important;padding-right:12px!important}}
+ 
+/* V2: compact responsive report, header date and measurement portal */
+#day.date{width:146px!important;min-width:146px!important;max-width:146px!important;padding:9px 14px 9px 12px!important;font-size:12px!important;letter-spacing:-.2px!important}
+#day.date::-webkit-calendar-picker-indicator{margin-right:0!important;width:15px!important;height:15px!important}
+.head>div:last-child{flex-shrink:0;min-width:0}
+@media(max-width:380px){#day.date{width:137px!important;min-width:137px!important;max-width:137px!important;font-size:11px!important;padding-left:8px!important;padding-right:12px!important}}
+.daygrid{overflow-x:visible!important;width:100%}
+.daygrid table{min-width:0!important;width:100%;table-layout:fixed;font-size:clamp(9px,2.5vw,11px)}
+.daygrid th,.daygrid td{padding:9px 2px!important;white-space:nowrap;overflow:hidden;text-overflow:clip;font-variant-numeric:tabular-nums}
+.daygrid th:first-child,.daygrid td:first-child{width:22%}
+.report-switch{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:13px;margin:15px 0 12px}
+.report-switch button{flex:1;padding:9px 4px;border-radius:10px;background:transparent;color:var(--sub);font-size:12px;font-weight:600}
+.report-switch button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 7px #0000000c}
+.subpage-entry{display:flex;align-items:center;justify-content:space-between;width:100%;background:transparent;color:var(--ink);padding:2px 0;font-weight:700;font-size:15px}
+#measurementsPanel{margin-top:18px}
+#measurementsPanel .card{padding:0;box-shadow:none;margin:0}
+#measurementsPanel .card-title{margin-bottom:13px}
+#measurementsPanel #bodyList{margin-top:12px}
+.measurement-history-item{display:flex;align-items:center;gap:10px;padding:13px 0}
+.measurement-details{flex:1;min-width:0}
+.measurement-details p{line-height:1.65;overflow-wrap:anywhere}
+.measurement-time{font-size:12px;font-weight:400;color:var(--sub);margin-left:5px}
+.measurement-history-item .item-menu{flex-shrink:0;margin-left:auto}
+
+.metric-label{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+.metric-label svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;opacity:.8}
+@media(max-width:380px){.metric-label{gap:3px}.metric-label svg{width:13px;height:13px}}
+
+/* Measurements form and complete history are one expandable component. */
+.measurement-portal{padding:18px 20px!important}
+.measurement-portal .body-combined-group{display:flex;flex-direction:column;gap:18px}
+.measurement-portal .measurement-inner-card{margin:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;border:0!important}
+.measurement-portal .measurement-inner-card + .measurement-inner-card{border-top:0!important;padding-top:0!important}
+.measurement-portal .measurement-inner-card > .card-title{display:none!important}
+.measurement-history-disclosure{margin-top:16px}
+.measurement-history-disclosure > summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:15px 0;font-weight:600;font-size:15px}
+.measurement-history-disclosure > summary::-webkit-details-marker{display:none}
+.measurement-history-disclosure > summary svg{width:18px;height:18px;transition:transform .2s}
+.measurement-history-disclosure[open] > summary svg{transform:rotate(90deg)}
+.measurement-history-disclosure #bodyList{padding-top:8px}
+.measurement-portal .layout-controls{display:none}
+.layout-editing .measurement-portal > .layout-controls{display:flex}
+</style><style id="date-control-clean-final">
+/* Single compact date control: explicit visible label and one custom arrow. */
+.date-control-v2{position:relative!important;flex:0 0 154px!important;width:154px!important;min-width:154px!important;max-width:154px!important;height:44px!important;background:var(--card)!important;border-radius:16px!important;overflow:hidden!important;box-sizing:border-box!important}
+.date-control-v2 .date-visible-v3{position:absolute!important;left:12px!important;right:36px!important;top:0!important;height:44px!important;display:flex!important;align-items:center!important;white-space:nowrap!important;overflow:visible!important;pointer-events:none!important;z-index:1!important;color:var(--ink)!important;font-size:12px!important;letter-spacing:0!important;font-variant-numeric:tabular-nums!important}
+.date-control-v2 #day.date{position:absolute!important;inset:0!important;display:block!important;width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;cursor:pointer!important;z-index:2!important;box-sizing:border-box!important}
+.date-control-v2 #day.date::-webkit-calendar-picker-indicator{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;opacity:0!important;cursor:pointer!important}
+.date-control-v2 .date-arrow-v2{position:absolute!important;right:9px!important;top:50%!important;transform:translateY(-50%)!important;width:26px!important;height:32px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important;border:0!important;padding:0!important;color:var(--ink)!important;z-index:3!important;cursor:pointer!important}
+@media(max-width:380px){.date-control-v2{flex-basis:154px!important;width:154px!important;min-width:154px!important;max-width:154px!important}}
+body[data-palette="nutrition"]{--accent:#E65B5B;--pink:#E65B5B;--ring1:#E65B5B;--ring2:#E4B83F;--ring3:#45A878;--soft-accent:#fff6f5;--bg:#f5f5f7}
+body.dark[data-palette="nutrition"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#E65B5B;--pink:#E65B5B;--accent-ink:#fff;--ring1:#E65B5B;--ring2:#E4B83F;--ring3:#45A878;--soft-accent:#30343a}
+body[data-palette="nutrition"] .dot{filter:none!important}
+</style><style id="date-horizontal-rectangle-repair">
+/* Prevent the date control from stretching vertically inside the header. */
+.head > div:last-child{align-self:flex-start!important;justify-content:flex-start!important;height:auto!important;min-height:0!important;max-height:none!important;}
+.head .date-control-v2{display:block!important;position:relative!important;flex:none!important;align-self:flex-end!important;width:154px!important;min-width:154px!important;max-width:154px!important;height:44px!important;min-height:44px!important;max-height:44px!important;aspect-ratio:auto!important;overflow:hidden!important;border-radius:16px!important;}
+.head .date-control-v2 .date-visible-v3{top:0!important;bottom:auto!important;height:44px!important;line-height:44px!important;}
+.head .date-control-v2 .date-arrow-v2{top:22px!important;}
+</style></head><body><main class="app"><header class="head"><div><div class="eyebrow">NUTRITRACK · DAILY WELLNESS</div><h1 id="pageTitle">Today</h1><div class="muted" id="subtitle">记录营养，看见变化</div></div><div style="display:flex;flex-direction:column;align-items:end;gap:7px"><div class="date-control-v2"><span class="date-visible-v3" id="dateVisibleV3" aria-hidden="true">2026/10/21</span><input aria-label="记录日期" class="date" id="day" type="date"/><button class="date-arrow-v2" id="dateArrowV2" type="button" aria-label="选择日期"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div><div class="actions"><button class="modebtn" id="langBtn" type="button">EN</button><button class="modebtn" id="themeBtn" type="button" aria-label="切换深浅色模式"></button></div></div></header>
+<section id="home"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title"><span data-i18n="dailyNutrition">今日营养</span><span class="muted" id="completion"></span></div><div class="rings"><svg viewbox="0 0 240 240"><g fill="none" stroke-linecap="round" stroke-width="13"><circle cx="120" cy="120" r="99" stroke="#e9eaed"></circle><circle cx="120" cy="120" id="calRing" r="99" stroke="#30343b" stroke-dasharray="0 999"></circle><circle cx="120" cy="120" r="76" stroke="#e9eaed"></circle><circle cx="120" cy="120" id="proteinRing" r="76" stroke="#777d87" stroke-dasharray="0 999"></circle><circle cx="120" cy="120" r="53" stroke="#e9eaed"></circle><circle cx="120" cy="120" id="fiberRing" r="53" stroke="#adb2ba" stroke-dasharray="0 999"></circle></g></svg><div class="center"><div class="big" id="calTotal">0</div><div class="mini">kcal eaten</div></div></div><div class="muted" id="calGoalLabel" style="text-align:center"></div><div class="metrics"><div class="metric"><div class="dot" style="background:#30343b"></div><span class="metric-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c4 0 7-3 7-7 0-3-2-5-4-7 0 3-1.5 4-2 4 0-4-2-7-5-10 0 5-3 8-3 13 0 4 3 7 7 7Z"/><path d="M12 22c2 0 3.5-1.6 3.5-3.5 0-1.5-1-2.7-2.5-4.5 0 2-1 2.8-2 3.5-.5-1-1-1.5-2-2.5-.5 1.5-.5 2.5-.5 3.5 0 2 1.5 3.5 3.5 3.5Z"/></svg><span>Calories</span></span><b id="calPct"></b><span id="calNumbers"></span></div><div class="metric"><div class="dot" style="background:#777d87"></div><span class="metric-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg><span>Protein</span></span><b id="proteinPct"></b><span id="proteinNumbers"></span></div><div class="metric"><div class="dot" style="background:#adb2ba"></div><span class="metric-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 8 5 15c0 3 2 5 5 5 7 0 10-7 10-16Z"/><path d="M5 20c3-6 7-9 12-12"/></svg><span>Fiber</span></span><b id="fiberPct"></b><span id="fiberNumbers"></span></div></div></div><div class="kpis layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card compact"><span class="tiny" data-i18n="exercise">运动消耗</span><b id="exerciseTotal">0 kcal</b></div><div class="card compact"><span class="tiny" data-i18n="net">净摄入热量</span><b id="netTotal">0 kcal</b></div><div class="card compact"><span class="tiny" data-i18n="deficit">每日热量缺口</span><b id="deficit">—</b></div><div class="card compact"><span class="tiny" data-i18n="weight">最新体重</span><b id="latestWeight">—</b></div></div><div class="section-head layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><h2 data-i18n="foodDiary">饮食日记</h2><button class="pill" data-i18n="homeAddFood" onclick="go('diary')">＋ 添加食物</button></div><div class="card layout-movable" id="homeMeals"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div><div class="section-head layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><h2 data-i18n="bowel">排便记录</h2><button class="pill" data-i18n="homeAddBowel" onclick="go('body')">＋ 添加</button></div><div class="card compact layout-movable" id="bowelSummary"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div></section>
+<section class="hide" id="diary"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="addFood">添加食物</div><form id="foodForm"><label class="field"><span data-i18n="foodLibrary">常用食物库</span><select class="inline-select" id="foodPreset"><option value="">选择食物自动填充</option></select></label><label class="field"><span data-i18n="foodName">食物名称</span><input maxlength="80" name="name" required=""/></label><div class="twocol"><label class="field"><span data-i18n="meal">餐次</span><select id="mealSelect" name="meal"><option value="早餐">早餐</option><option value="午餐">午餐</option><option value="晚餐">晚餐</option></select></label><label class="field">Calories · kcal<input min="0" name="cal" required="" step="0.1" type="number"/></label><label class="field">Protein · g<input min="0" name="protein" required="" step="0.1" type="number"/></label><label class="field">Fiber · g<input min="0" name="fiber" required="" step="0.1" type="number"/></label></div><div class="food-form-actions"><button class="secondary hide" id="foodCancel" type="button">取消编辑</button><button class="primary" data-i18n="saveFood" id="foodSubmit">＋ 保存食物</button></div></form></div><div class="section-head layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><h2 data-i18n="foodRecords">当天饮食记录</h2></div><div class="card layout-movable" id="foodList"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="libraryManage">管理常用食物库</div><form id="presetForm"><label class="field">名称<input maxlength="80" name="name" required=""/></label><div class="twocol"><label class="field">Calories<input min="0" name="cal" required="" step="0.1" type="number"/></label><label class="field">Protein<input min="0" name="protein" required="" step="0.1" type="number"/></label><label class="field">Fiber<input min="0" name="fiber" required="" step="0.1" type="number"/></label></div><button class="primary" data-i18n="savePreset" id="presetSubmit">＋ 保存到食物库</button><button class="secondary hide" id="presetCancel" type="button">取消编辑</button></form><div id="presetList"></div></div></section>
+<section class="hide" id="body"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="bodyRecord">身体围度记录</div><form id="bodyForm"><div class="twocol"><label class="field">体重 kg<input min="0" name="weight" step="0.1" type="number"/></label><label class="field">腰围 cm<input min="0" name="waist" step="0.1" type="number"/></label><label class="field">臀围 cm<input min="0" name="hip" step="0.1" type="number"/></label><label class="field">大腿围 cm<input min="0" name="thigh" step="0.1" type="number"/></label><label class="field">臂围 cm<input min="0" name="arm" step="0.1" type="number"/></label><label class="field">小腿围 cm<input min="0" name="calf" step="0.1" type="number"/></label></div><div class="record-edit-actions"><button class="secondary hide" type="button" id="bodyCancel" onclick="cancelRecordEdit('body')">取消编辑</button><button class="primary" id="bodySave">＋ 保存一条身体记录</button></div></form></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">全部身体围度记录</div><div id="bodyList"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="bowel">排便记录</div><form id="bowelForm"><div class="twocol"><label class="field">时间<input name="time" required="" type="time"/></label><label class="field">Bristol 类型<select name="type"><option value="1">1 · 硬颗粒</option><option value="2">2 · 块状</option><option value="3">3 · 有裂纹</option><option selected="" value="4">4 · 光滑柔软</option><option value="5">5 · 软块</option><option value="6">6 · 糊状</option><option value="7">7 · 水样</option></select></label></div><label class="field">备注（选填）<input maxlength="120" name="note" placeholder="例如：顺畅"/></label><div class="record-edit-actions"><button class="secondary hide" type="button" id="bowelCancel" onclick="cancelRecordEdit('bowels')">取消编辑</button><button class="primary" id="bowelSave">＋ 保存排便记录</button></div></form><div id="bowelList"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="addExercise">添加运动</div><form id="exerciseForm"><label class="field">运动名称<input maxlength="80" name="name" placeholder="爬坡走路" required=""/></label><div class="twocol"><label class="field">时长（分钟，可选）<input min="0" name="minutes" placeholder="40" type="number"/></label><label class="field">消耗热量 kcal<input min="0" name="cal" required="" step="0.1" type="number"/></label></div><div class="record-edit-actions"><button class="secondary hide" type="button" id="exerciseCancel" onclick="cancelRecordEdit('exercises')">取消编辑</button><button class="primary" id="exerciseSave">＋ 保存运动</button></div></form></div><div class="card layout-movable" id="exerciseList"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div></section>
+<section class="hide" id="trends"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title"><span id="periodTitle">本周统计</span><span class="muted" id="weekLabel"></span></div><div class="report-switch" id="reportSwitch"><button class="on" type="button" data-report="week" onclick="setReportPeriod('week')">周报</button><button type="button" data-report="month" onclick="setReportPeriod('month')">月报</button><button type="button" data-report="year" onclick="setReportPeriod('year')">年报</button></div><div class="daygrid" id="weekTable"></div><div class="kpis" id="weekTotals" style="margin-top:14px"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">本周摄入热量 <span class="muted">Calories</span></div><div class="chart" id="trendChart"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">体重趋势</div><div id="weightTrend"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">历史记录导出</div><button class="primary" id="copyHistory" type="button">复制全部历史记录文本</button><button class="secondary" id="downloadBackup" style="margin-top:9px" type="button">下载 JSON 备份</button></div></section>
+<section class="hide" id="profile"><div id="profileOverview"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">用户资料</div><form id="profileForm"><label class="field">昵称<input maxlength="50" name="nickname" placeholder="你的昵称"/></label><div class="twocol"><label class="field">身高 cm<input min="0" name="height" step="0.1" type="number"/></label><label class="field">目标体重 kg<input min="0" name="targetWeight" step="0.1" type="number"/></label></div><button class="primary">保存资料</button></form></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="goals">每日营养目标</div><form id="goalForm"><div class="twocol"><label class="field">热量 kcal<input min="1" name="cal" required="" type="number"/></label><label class="field">蛋白质 g<input min="1" name="protein" required="" type="number"/></label><label class="field">膳食纤维 g<input min="1" name="fiber" required="" type="number"/></label><label class="field">TDEE kcal<input min="0" name="tdee" placeholder="选填" type="number"/></label></div><button class="primary">保存目标</button></form></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">数据与隐私</div><p class="summary">本地原型：数据保存在当前浏览器 LocalStorage，尚未接入 Supabase 云端同步。清除浏览器数据可能导致记录丢失。</p><button class="secondary" id="exportBtn">下载 JSON 备份</button></div></div><div class="card" id="settingsEntryCard"><button class="settings-entry" id="openSettings" type="button"><span class="settings-entry-icon">⚙</span><span id="settingsEntryText">设置</span><span class="settings-chevron">›</span></button></div><div class="hide" id="settingsPanel"><button class="settings-back" id="backProfile" type="button">‹ <span id="backProfileText">我的</span></button><div class="card"><div class="card-title" id="settingsHeading">设置</div><div class="item"><span id="languageRowText">语言</span><button class="secondary" id="langSettings">切换语言</button></div><div class="item"><span id="modeRowText">浅色 / 深色模式</span><button class="secondary" id="themeSettings">切换模式</button></div><button class="settings-entry" id="openPalette" type="button"><span id="paletteRowText">主题配色</span><span class="settings-entry-right"><span class="palette-current-dot" id="currentPaletteDot"></span><span id="currentPaletteText"></span><span class="settings-chevron">›</span></span></button></div></div><div class="hide" id="palettePanel"><button class="settings-back" id="backSettings" type="button">‹ <span id="backSettingsText">设置</span></button><div class="card" id="paletteCard"><div class="card-title" id="paletteTitle">主题配色</div><p class="tiny" id="paletteHint">选择你喜欢的配色，立即应用到整个 App</p><div class="palette-grid" id="paletteGrid"></div></div></div></section></main>
+<nav class="nav"><button class="active" id="nav-home" onclick="go('home')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"></path></svg><span data-i18n="navHome">首页</span></button><button id="nav-diary" onclick="go('diary')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="M4 3v7a3 3 0 0 0 6 0V3M7 3v18M15 3v7h5V3a5 5 0 0 0-5 5v13"></path></svg><span data-i18n="navDiary">饮食</span></button><button id="nav-body" onclick="go('body')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path><path d="M3.4 12h4l2-3.5 3.2 7 2-3.5h6"></path></svg><span data-i18n="navBody">身体</span></button><button id="nav-trends" onclick="go('trends')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="M3 3v18h18M8 16v-5M13 16V7M18 16V4"></path></svg><span data-i18n="navTrends">周报</span></button><button id="nav-profile" onclick="go('profile')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span data-i18n="navProfile">我的</span></button></nav><div class="toast hide" id="toast" role="status"></div><script>
+
+const KEY='nutritrack-v2-local-1';
+const today=()=>localDate(new Date());
+function localDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+const $=id=>document.getElementById(id),num=x=>Number(x)||0,fmt=x=>Number.isInteger(x)?String(x):Number(x).toFixed(1),uid=()=>globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random()}`;
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+const presets=[['鸡胸肉 100g',165,31,0],['鸡蛋 1个',72,6.3,0],['燕麦 40g',156,6.8,4],['无糖希腊酸奶 100g',59,10,0],['香蕉 100g',89,1.1,2.6],['苹果 100g',52,.3,2.4],['西兰花 100g',34,2.8,2.6],['米饭 100g',130,2.7,.4],['豆腐 100g',76,8,0.3],['红薯 100g',86,1.6,3],['牛奶 250ml',125,8,0],['三文鱼 100g',208,20,0]].map(([name,cal,protein,fiber])=>({id:uid(),name,cal,protein,fiber}));
+let state;try{state=JSON.parse(localStorage.getItem(KEY))||{}}catch{state={}};
+state={foods:[],exercises:[],body:{},bowels:[],foodLibrary:presets,goals:{cal:1500,protein:100,fiber:25,tdee:0},profile:{nickname:'',height:'',targetWeight:''},lang:'zh',theme:'light',palette:'mono',...state};
+// Upgrade data from early prototype, which stored one body entry per day.
+if(!Array.isArray(state.body)){state.body=Object.entries(state.body||{}).filter(([,v])=>v&&typeof v==='object').flatMap(([date,v])=>[{...v,date,id:uid(),createdAt:date+'T12:00:00'}])}
+for(const key of ['foods','exercises','body','bowels','foodLibrary'])if(!Array.isArray(state[key]))state[key]=[];
+if(!state.foodLibrary.length&&!localStorage.getItem(KEY))state.foodLibrary=presets;
+let date=today(),active='home',editFood=null,editPreset=null,lastComplete='';
+// Declare edit state before the first applyPrefs()/render() call.
+let editExercise=null,editBody=null,editBowel=null;$('day').value=date;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert(localizedText('浏览器无法保存数据，请检查存储空间或隐私模式。'))}};
+const ofDay=arr=>arr.filter(x=>x.date===date),sum=(arr,k)=>ofDay(arr).reduce((a,x)=>a+num(x[k]),0);
+function toast(msg){const el=$('toast');el.textContent=localizedText(msg);el.classList.remove('hide');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.add('hide'),2400)}
+function ring(id,r,p){const c=2*Math.PI*r;$(id).setAttribute('stroke-dasharray',`${Math.max(0,Math.min(1,p))*c} ${c}`)}
+const translations={zh:{homeAddFood:'＋ 添加食物',homeAddBowel:'＋ 添加',saveFood:'＋ 保存食物',savePreset:'＋ 保存到食物库',dailyNutrition:'今日营养',exercise:'运动消耗',net:'净摄入热量',deficit:'每日热量缺口',weight:'最新体重',foodDiary:'饮食日记',bowel:'排便记录',addFood:'添加食物',foodLibrary:'常用食物库',foodName:'食物名称',meal:'餐次',foodRecords:'当天饮食记录',libraryManage:'管理常用食物库',addExercise:'添加运动',bodyRecord:'身体围度记录',goals:'每日营养目标',navHome:'首页',navDiary:'饮食',navBody:'身体',navTrends:'周报',navProfile:'我的'},en:{homeAddFood:'＋ Add Food',homeAddBowel:'＋ Add',saveFood:'＋ Save Food',savePreset:'＋ Save to Food Library',dailyNutrition:'Daily Nutrition',exercise:'Exercise Burn',net:'Net Calories',deficit:'Calorie Deficit',weight:'Latest Weight',foodDiary:'Food Diary',bowel:'Bowel Log',addFood:'Add Food',foodLibrary:'Food Library',foodName:'Food Name',meal:'Meal',foodRecords:'Daily Food Records',libraryManage:'Manage Food Library',addExercise:'Add Exercise',bodyRecord:'Body Measurements',goals:'Daily Goals',navHome:'Home',navDiary:'Diary',navBody:'Body',navTrends:'Weekly',navProfile:'Profile'}};
+function t(key){return translations[state.lang]?.[key]||key}
+const lexicon={
+'Today':'今天','Calories Eaten':'已摄入热量','Daily goal':'每日目标','Take good care of yourself, every day':'记录营养，看见变化','Exercise Burn':'运动消耗','Net Calories':'净摄入热量','Daily Calorie Deficit':'每日热量缺口','Latest Weight':'最新体重','Home':'首页','Diary':'饮食','Body':'身体','Weekly':'周报','Profile':'我的','Food Diary':'饮食日记','Body & Wellness':'身体与健康','Weekly Insights':'每周统计','Profile & Settings':'我的与设置',
+'NUTRITRACK · DAILY WELLNESS':'NUTRITRACK · 每日健康','DAILY WELLNESS':'每日健康','Daily Nutrition':'今日营养','kcal eaten':'已摄入热量','已摄入热量':'Calories Eaten','Track nutrition, see your progress':'记录营养，看见变化','记录营养，看见变化':'Track nutrition, see your progress','Calories':'热量','Protein':'蛋白质','Fiber':'膳食纤维','Add food':'添加食物','Add':'添加','Goals achieved':'目标已达成',
+'每一天，都好好照顾自己':'Track nutrition, see your progress','每日目标':'Daily goal','今日营养':'Daily Nutrition','运动消耗':'Exercise Burn','净摄入热量':'Net Calories','每日热量缺口':'Daily Calorie Deficit','最新体重':'Latest Weight','饮食日记':'Food Diary','排便记录':'Bowel Log','添加食物':'Add Food','常用食物库':'Food Library','食物名称':'Food Name','餐次':'Meal','当天饮食记录':'Daily Food Records','管理常用食物库':'Manage Food Library','添加运动':'Add Exercise','身体围度记录':'Body Measurements','每日营养目标':'Daily Nutrition Goals',
+'首页':'Home','饮食':'Diary','身体':'Body','周报':'Weekly','我的':'Profile','早餐':'Breakfast','午餐':'Lunch','晚餐':'Dinner',
+'保存修改':'Save Changes','选择食物自动填充':'Select a food to autofill','保存食物':'Save Food','取消编辑':'Cancel Editing','清空食物':'Clear Food','名称':'Name','保存到食物库':'Save to Food Library','运动名称':'Exercise Name','爬坡走路':'Incline Walking','时长（分钟，可选）':'Duration (minutes, optional)','消耗热量 kcal':'Calories Burned · kcal','保存运动':'Save Exercise','清空当天食物和运动':'Clear Today’s Food & Exercise',
+'体重 kg':'Weight · kg','腰围 cm':'Waist · cm','臀围 cm':'Hips · cm','大腿围 cm':'Thigh · cm','臂围 cm':'Arm · cm','小腿围 cm':'Calf · cm','保存一条身体记录':'Save Body Measurements','当日身体记录':'Today’s Body Records','时间':'Time','Bristol 类型':'Bristol Type','备注（选填）':'Notes (optional)','例如：顺畅':'e.g. Comfortable','保存排便记录':'Save Bowel Log',
+'硬颗粒':'Hard lumps','块状':'Lumpy','有裂纹':'Cracked','光滑柔软':'Smooth and soft','软块':'Soft blobs','糊状':'Mushy','水样':'Watery',
+'本周统计':'Weekly Summary','本周摄入热量':'Weekly Calories','体重趋势':'Weight Trend','历史记录导出':'Export History','复制全部历史记录文本':'Copy All History as Text','下载 JSON 备份':'Download JSON Backup',
+'用户资料':'User Profile','昵称':'Nickname','你的昵称':'Your nickname','身高 cm':'Height · cm','目标体重 kg':'Target Weight · kg','保存资料':'Save Profile','热量 kcal':'Calories · kcal','蛋白质 g':'Protein · g','膳食纤维 g':'Fiber · g','选填':'Optional','保存目标':'Save Goals',
+'显示设置':'Display Settings','中文 / English':'Chinese / English','切换语言':'Switch Language','浅色 / 深色模式':'Light / Dark Mode','切换模式':'Switch Theme','数据与隐私':'Data & Privacy',
+'本地原型：数据保存在当前浏览器 LocalStorage，尚未接入 Supabase 云端同步。清除浏览器数据可能导致记录丢失。':'Local prototype: Data is saved in this browser using LocalStorage. Supabase cloud sync is not connected yet. Clearing browser data may delete your records.',
+'今日排便次数':'Today’s Bowel Movements','项记录':'items','还没有食物记录':'No food records yet','还没有运动记录':'No exercise records yet','还没有身体记录':'No body records yet','还没有排便记录':'No bowel records yet','食物库为空':'Food library is empty','删除':'Delete','编辑':'Edit','保存修改':'Save Changes',
+'日期':'Date','摄入':'Intake','运动':'Exercise','蛋白':'Protein','纤维':'Fiber','本周总摄入':'Weekly Intake','本周总运动':'Weekly Exercise','有记录天数':'Days Recorded','平均热量':'Average Calories','平均蛋白':'Average Protein','平均纤维':'Average Fiber','天':'days','还没有体重记录':'No weight records yet',
+'体重':'Weight','腰围':'Waist','臀围':'Hips','大腿围':'Thigh','臂围':'Arm','小腿围':'Calf',
+'鸡胸肉 100g':'Chicken Breast 100g','鸡蛋 1个':'Egg · 1','燕麦 40g':'Oats 40g','无糖希腊酸奶 100g':'Plain Greek Yogurt 100g','香蕉 100g':'Banana 100g','苹果 100g':'Apple 100g','西兰花 100g':'Broccoli 100g','米饭 100g':'Cooked Rice 100g','豆腐 100g':'Tofu 100g','红薯 100g':'Sweet Potato 100g','牛奶 250ml':'Milk 250ml','三文鱼 100g':'Salmon 100g',
+'食物已保存':'Food saved','食物库已保存':'Food library saved','运动已保存':'Exercise saved','身体数据已保存':'Body measurements saved','排便记录已保存':'Bowel record saved','目标已保存':'Goals saved','资料已保存':'Profile saved','历史记录已复制':'History copied','请复制以下记录':'Copy the following records','确定删除这条记录吗？':'Delete this record?','清空当天全部食物记录？':'Clear all food records for this day?','清空当天食物和运动记录？身体与排便记录会保留。':'Clear food and exercise for this day? Body and bowel records will be kept.','请至少填写一项身体数据':'Enter at least one body measurement','浏览器无法保存数据，请检查存储空间或隐私模式。':'Unable to save in this browser. Check storage or private browsing settings.','今日营养目标全部达成！':'All daily nutrition goals achieved!',
+};
+const enMap=Object.fromEntries(Object.entries(lexicon).filter(([k,v])=>/[\u3400-\u9fff]/.test(k)&&!/[\u3400-\u9fff]/.test(v)));
+Object.assign(enMap,{'热量':'Calories','蛋白质':'Protein','膳食纤维':'Fiber','光滑柔软':'Smooth and soft','天':'days','添加':'Add','添加食物':'Add food','保存食物':'Save Food','保存到食物库':'Save to Food Library'});
+const zhMap=Object.fromEntries(Object.entries(enMap).map(([k,v])=>[v,k]));
+Object.assign(zhMap,{'Calories':'热量','Protein':'蛋白质','Fiber':'膳食纤维','Name':'名称','Daily Nutrition':'今日营养','Daily goal':'每日目标','kcal eaten':'已摄入热量','Calories Eaten':'已摄入热量','Add food':'添加食物','Add Food':'添加食物','Add':'添加','Smooth and soft':'光滑柔软','Take good care of yourself, every day':'每一天，都好好照顾自己'});
+const originalText=new WeakMap(),originalAttrs=new WeakMap();
+function localizedText(raw){
+  if(!raw)return raw;
+  const plus=raw.match(/^([＋+]\s*)/);
+  if(plus)return plus[1]+localizedText(raw.slice(plus[1].length));
+  const map=state.lang==='en'?enMap:zhMap;
+  if(map[raw])return map[raw];
+  if(state.lang==='zh' && lexicon[raw] && /[\u3400-\u9fff]/.test(lexicon[raw]))return lexicon[raw];
+  if(state.lang==='en'){
+    return raw.replace(/(\d+)\s*项记录/g,'$1 items').replace(/(\d+)\s*天(?=\s|$)/g,'$1 days').replace(/(\d+)\s*·\s*(硬颗粒|块状|有裂纹|光滑柔软|软块|糊状|水样)/g,(_,n,v)=>n+' · '+(enMap[v]||v)).replace(/(^|[ ·])(?:体重|腰围|臀围|大腿围|臂围|小腿围)(?=\s+[\d.])/g,m=>m.replace(/体重|腰围|臀围|大腿围|臂围|小腿围/g,x=>enMap[x]||x));
+  }
+  return raw.replace(/(\d+)\s*items/g,'$1 项记录').replace(/(\d+)\s*days(?=\s|$)/g,'$1 天').replace(/(\d+)\s*·\s*(Hard lumps|Lumpy|Cracked|Smooth and soft|Soft blobs|Mushy|Watery)/g,(_,n,v)=>n+' · '+(zhMap[v]||v));
+}
+function localizeDOM(){
+  const walker=document.createTreeWalker(document.querySelector('main'),NodeFilter.SHOW_TEXT);
+  let node;while((node=walker.nextNode())){
+    if(node.parentElement?.closest('script,style,[data-i18n],input,textarea,option'))continue;
+    const current=node.nodeValue, previous=originalText.get(node);
+    const source=previous!==undefined && (current===previous || current===translateNode(previous) || current===translateNodeFor(previous,state.lang==='zh'?'en':'zh'))?previous:current;
+    originalText.set(node,source);
+    node.nodeValue=translateNode(source);
+  }
+  document.querySelectorAll('input[placeholder],input[aria-label],select option').forEach(el=>{
+    for(const attr of ['placeholder','aria-label'])if(el.hasAttribute(attr)){
+      let attrs=originalAttrs.get(el);if(!attrs){attrs={};originalAttrs.set(el,attrs)}
+      if(!(attr in attrs))attrs[attr]=el.getAttribute(attr);
+      el.setAttribute(attr,localizedText(attrs[attr]));
+    }
+    if(el.tagName==='OPTION'){
+      const original=el.dataset.originalLabel??el.textContent;
+      if(!el.dataset.originalLabel)el.dataset.originalLabel=original;
+      el.textContent=localizedText(original);
+    }
+  });
+}
+function translateNodeFor(source,lang){const old=state.lang;state.lang=lang;const result=translateNode(source);state.lang=old;return result}
+function translateNode(source){
+  const lead=source.match(/^\s*/)[0],trail=source.match(/\s*$/)[0],value=source.trim();
+  return value?lead+localizedText(value)+trail:source;
+}
+
+const THEMES=[
+{id:'nutrition',zh:'营养三色',en:'Nutrition Colors',swatches:['#E65B5B','#E4B83F','#45A878']},
+{id:'mono',zh:'极简黑白',en:'Monochrome',swatches:['#292d34','#777d87','#adb2ba']},
+{id:'sage',zh:'鼠尾草绿',en:'Sage Green',swatches:['#658b78','#99b5a4','#c3d6c9']},
+{id:'cream',zh:'奶油杏色',en:'Cream Beige',swatches:['#b88768','#d3ab91','#e2cbb4']},
+{id:'lavender',zh:'薰衣草紫',en:'Lavender',swatches:['#8d79ba','#b0a0d0','#d0c3e4']},
+{id:'blue',zh:'雾霾蓝',en:'Dusty Blue',swatches:['#6886ac','#93aac4','#c0cfdf']},
+{id:'rose',zh:'柔雾粉',en:'Soft Rose',swatches:['#c17e95','#d9a7b7','#edcbd5']},
+{id:'mint',zh:'薄荷绿',en:'Mint',swatches:['#4e9b8c','#84bcb0','#b7dcd3']},
+{id:'terracotta',zh:'陶土橘',en:'Terracotta',swatches:['#b87556','#d6a088','#e8c4b3']}
+];
+function renderPalettePicker(){
+  const grid=$('paletteGrid');if(!grid)return;
+  const zh=state.lang==='zh';
+  $('paletteTitle').textContent=zh?'主题配色':'Color Themes';
+  $('paletteHint').textContent=zh?'选择你喜欢的配色，立即应用到整个 App':'Choose a palette to apply instantly across the app';
+  grid.innerHTML=THEMES.map(x=>`<button type="button" class="palette-option" aria-pressed="${state.palette===x.id}" onclick="choosePalette('${x.id}')"><span class="palette-preview"><span class="palette-swatches">${x.swatches.map(c=>`<i style="background:${c}"></i>`).join('')}</span>${state.palette===x.id?'<span class="palette-check" aria-hidden="true">✓</span>':''}</span><span class="palette-name">${zh?x.zh:x.en}</span></button>`).join('');
+}
+let profileView='overview';
+function showProfileView(view){profileView=view;const overview=view==='overview',settings=view==='settings',palette=view==='palette';$('profileOverview').classList.toggle('hide',!overview);$('settingsEntryCard').classList.toggle('hide',!overview);$('settingsPanel').classList.toggle('hide',!settings);$('palettePanel').classList.toggle('hide',!palette);updateSettingsLabels();window.scrollTo({top:0,behavior:'smooth'});}
+function updateSettingsLabels(){const zh=state.lang==='zh';const labels={settingsEntryText:['设置','Settings'],backProfileText:['我的','Profile'],backSettingsText:['设置','Settings'],settingsHeading:['设置','Settings'],languageRowText:['语言','Language'],modeRowText:['浅色 / 深色模式','Light / Dark Mode'],paletteRowText:['主题配色','Color Themes']};for(const [id,values] of Object.entries(labels))$(id).textContent=values[zh?0:1];const chosen=THEMES.find(x=>x.id===state.palette)||THEMES[0];$('currentPaletteText').textContent=zh?chosen.zh:chosen.en;$('currentPaletteDot').style.background=chosen.swatches[0];$('pageTitle').textContent=profileView==='overview'?(zh?'我的':'Profile'):profileView==='settings'?(zh?'设置':'Settings'):(zh?'主题配色':'Color Themes');}
+$('openSettings').onclick=()=>showProfileView('settings');$('openPalette').onclick=()=>showProfileView('palette');$('backSettings').onclick=()=>showProfileView('settings');$('backProfile').onclick=()=>showProfileView('overview');
+function choosePalette(id){if(!THEMES.some(x=>x.id===id))return;state.palette=id;save();applyPrefs();updateSettingsLabels();}
+
+function applyPrefs(){
+  document.body.classList.toggle('dark',state.theme==='dark');
+  document.body.dataset.palette=THEMES.some(x=>x.id===state.palette)?state.palette:'mono';
+  renderPalettePicker();updateSettingsLabels();
+  $('langBtn').textContent=state.lang==='zh'?'EN':'中';
+  $('themeBtn').innerHTML=state.theme==='dark'?'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>':'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.7 13A8.5 8.5 0 0 1 11 3.3 8.5 8.5 0 1 0 20.7 13Z"/></svg>'; $('themeBtn').setAttribute('aria-label',state.lang==='zh'?'切换深浅色模式':'Toggle dark mode');
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.documentElement.lang=state.lang==='zh'?'zh-CN':'en';
+  $('pageTitle').textContent=({home:state.lang==='zh'?'今天':'Today',diary:state.lang==='zh'?'饮食日记':'Food Diary',body:state.lang==='zh'?'身体与健康':'Body & Wellness',trends:state.lang==='zh'?'每周统计':'Weekly Insights',profile:state.lang==='zh'?'我的与设置':'Profile & Settings'})[active];
+  $('subtitle').textContent=state.lang==='zh'?'记录营养，看见变化':'Track nutrition, see your progress';
+  if(editFood)$('foodSubmit').textContent=localizedText('保存修改');
+  if(editPreset)$('presetSubmit').textContent=localizedText('保存修改');
+  localizeDOM();
+  for(const [type,id] of [['exercises','exerciseSave'],['body','bodySave'],['bowels','bowelSave']]){const activeEdit=type==='exercises'?editExercise:type==='body'?editBody:editBowel;if(activeEdit)$(id).textContent=state.lang==='zh'?'保存修改':'Save Changes';}
+  for(const id of ['exerciseCancel','bodyCancel','bowelCancel'])$(id).textContent=state.lang==='zh'?'取消编辑':'Cancel';
+  if(active==='profile')renderPalettePicker();
+}
+function go(tab){active=tab;if(tab==='profile')showProfileView('overview');for(const id of ['home','diary','body','trends','profile']){$(id).classList.toggle('hide',id!==tab);$('nav-'+id).classList.toggle('active',id===tab)}applyPrefs();render();window.scrollTo({top:0,behavior:'smooth'})}
+function weekDays(){const d=new Date(date+'T12:00:00');d.setDate(d.getDate()-((d.getDay()+6)%7));return Array.from({length:7},(_,i)=>{const x=new Date(d);x.setDate(d.getDate()+i);return localDate(x)})}
+function render(){const g=state.goals,cal=sum(state.foods,'cal'),protein=sum(state.foods,'protein'),fiber=sum(state.foods,'fiber'),exercise=sum(state.exercises,'cal'),net=cal-exercise;
+$('calTotal').textContent=fmt(cal);$('calGoalLabel').textContent=`${state.lang==='zh'?'每日目标':'Daily goal'} ${g.cal} kcal · ${Math.round(cal/g.cal*100)}%`;
+for(const [id,value,goal,r] of [['cal',cal,g.cal,99],['protein',protein,g.protein,76],['fiber',fiber,g.fiber,53]]){ring(id+'Ring',r,value/goal);$(id+'Pct').textContent=Math.round(value/goal*100)+'%';$(id+'Numbers').textContent=`${fmt(value)} / ${goal} ${id==='cal'?'kcal':'g'}`}
+$('exerciseTotal').textContent=fmt(exercise)+' kcal';$('netTotal').textContent=fmt(net)+' kcal';$('deficit').textContent=g.tdee?fmt(g.tdee-net)+' kcal':'—';
+const weights=state.body.filter(x=>num(x.weight)>0).sort((a,b)=>(b.date+b.createdAt).localeCompare(a.date+a.createdAt));$('latestWeight').textContent=weights.length?fmt(num(weights[0].weight))+' kg':'—';
+$('homeMeals').innerHTML=['早餐','午餐','晚餐'].map(m=>{const a=ofDay(state.foods).filter(x=>x.meal===m);return `<div class="item home-meal-row"><div class="home-meal-info"><b>${state.lang==='en'?({'早餐':'Breakfast','午餐':'Lunch','晚餐':'Dinner'}[m]):m}</b><p>${a.length} ${state.lang==='zh'?'项记录':'items'}</p></div><div class="right"><b>${fmt(a.reduce((s,x)=>s+num(x.cal),0))} kcal</b></div></div>`}).join('');
+$('bowelSummary').innerHTML=`<div class="row"><span>${state.lang==='zh'?'今日排便次数':'Today’s bowel movements'}</span><b>${ofDay(state.bowels).length}</b></div>`;
+$('foodList').innerHTML=ofDay(state.foods).length?['早餐','午餐','晚餐'].map(m=>{const a=ofDay(state.foods).filter(x=>x.meal===m);return a.length?`<div class="tiny" style="margin-top:12px">${m}</div>`+a.map(x=>`<div class="item"><div><b>${esc(x.name)}</b><p>${fmt(num(x.protein))}g protein · ${fmt(num(x.fiber))}g fiber · ${esc(x.createdAt?new Date(x.createdAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'')}</p></div><div class="right food-record-actions"><b class="food-calories">${fmt(num(x.cal))} kcal</b><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editFoodEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('foods','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div></div>`).join(''):''}).join(''):'<div class="empty">还没有食物记录</div>';
+$('exerciseList').innerHTML=ofDay(state.exercises).length?ofDay(state.exercises).map(x=>`<div class="item"><div><b>${esc(x.name)}</b><p>${num(x.minutes)?fmt(num(x.minutes))+' min':''}</p></div><div class="right exercise-record-actions"><b class="exercise-calories">${fmt(num(x.cal))} kcal</b><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editExerciseEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('exercises','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div></div>`).join(''):'<div class="empty">还没有运动记录</div>';
+$('bodyList').innerHTML=state.body.length?[...state.body].sort((a,b)=>(String(b.date||'')+' '+String(b.createdAt||'')).localeCompare(String(a.date||'')+' '+String(a.createdAt||''))).map(x=>{const zh=state.lang==='zh';const measures=[['weight',zh?'体重':'Weight','kg'],['waist',zh?'腰围':'Waist','cm'],['hip',zh?'臀围':'Hips','cm'],['thigh',zh?'大腿围':'Thigh','cm'],['arm',zh?'臂围':'Arm','cm'],['calf',zh?'小腿围':'Calf','cm']].filter(([k])=>x[k]!==undefined&&x[k]!==null&&x[k]!=='');const time=x.createdAt?new Date(x.createdAt).toLocaleTimeString(zh?'zh-CN':'en-GB',{hour:'2-digit',minute:'2-digit'}):'';return `<div class="item measurement-history-item"><div class="measurement-details"><b>${esc(x.date||'')} <span class="measurement-time">${esc(time)}</span></b><p>${measures.map(([k,label,unit])=>`${label} ${fmt(num(x[k]))} ${unit}`).join(' · ')}</p></div><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editBodyEntry('${x.id}')">${zh?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('body','${x.id}')">${zh?'删除':'Delete'}</button></div></details></div>`}).join(''):`<div class="empty">${state.lang==='zh'?'还没有身体围度记录':'No body measurement records yet'}</div>`;
+$('bowelList').innerHTML=ofDay(state.bowels).length?ofDay(state.bowels).map(x=>`<div class="item"><div><b>${esc(x.time)} · Bristol ${esc(x.type)}</b><p>${esc(x.note||'')}</p></div><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editBowelEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('bowels','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div>`).join(''):'<div class="empty">还没有排便记录</div>';
+$('foodPreset').innerHTML='<option value="">选择食物自动填充</option>'+state.foodLibrary.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('');
+$('presetList').innerHTML=state.foodLibrary.map(x=>`<div class="item"><div><b>${esc(x.name)}</b><p>${fmt(num(x.cal))} kcal · P ${fmt(num(x.protein))}g · F ${fmt(num(x.fiber))}g</p></div><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editPresetEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('foodLibrary','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div>`).join('')||'<div class="empty">食物库为空</div>';
+$('weightTrend').innerHTML=weights.length?weights.slice(0,12).map(x=>`<div class="item"><span class="smalltext">${x.date}</span><b>${fmt(num(x.weight))} kg</b></div>`).join(''):'<div class="empty">还没有体重记录</div>';
+for(const [k,v] of Object.entries(g))$('goalForm').elements[k].value=v||'';for(const [k,v] of Object.entries(state.profile))$('profileForm').elements[k].value=v||'';
+const completed=cal>0&&cal<=g.cal&&protein>=g.protein&&fiber>=g.fiber;$('completion').textContent=completed?(state.lang==='zh'?'✓ 目标已达成':'✓ Goals achieved'):'';const marker=date+':'+[cal,protein,fiber].join(':');if(completed&&lastComplete!==marker){lastComplete=marker;toast('🎉 '+localizedText('今日营养目标全部达成！'))}
+if(active==='trends')renderPeriodReport();
+applyPrefs();
+}
+
+let reportPeriod='week';
+function toggleMeasurements(){
+ const panel=document.getElementById('measurementsPanel');
+ panel.classList.toggle('hide');
+ const svg=document.querySelector('#measurementsEntry svg');
+ if(svg)svg.style.transform=panel.classList.contains('hide')?'':'rotate(90deg)';
+}
+function setReportPeriod(period){
+ reportPeriod=period;
+ document.querySelectorAll('[data-report]').forEach(b=>b.classList.toggle('on',b.dataset.report===period));
+ render();
+}
+function renderPeriodReport(){
+ const en=state.lang==='en',d=new Date(date+'T12:00:00');
+ const first=new Date(d),last=new Date(d);
+ let units=[],heading='',periodName='';
+ if(reportPeriod==='month'){
+   first.setDate(1);last.setMonth(d.getMonth()+1,0);
+   const count=last.getDate();
+   units=Array.from({length:count},(_,i)=>{const x=new Date(first);x.setDate(i+1);const key=localDate(x);return {key,label:String(i+1)}});
+   heading=en?'Monthly Summary':'本月统计';periodName=date.slice(0,7);
+ }else if(reportPeriod==='year'){
+   first.setMonth(0,1);last.setMonth(11,31);
+   units=Array.from({length:12},(_,i)=>({key:date.slice(0,4)+'-'+String(i+1).padStart(2,'0'),label:en?String(i+1):String(i+1)+'月'}));
+   heading=en?'Yearly Summary':'本年统计';periodName=date.slice(0,4);
+ }else{
+   const days=weekDays();
+   units=days.map(key=>({key,label:key.slice(5)}));
+   heading=en?'Weekly Summary':'本周统计';periodName=days[0]+' — '+days[6];
+ }
+ const byUnit=units.map(u=>{
+   const match=x=>reportPeriod==='year'?x.date.startsWith(u.key):x.date===u.key;
+   const foods=state.foods.filter(match),exercise=state.exercises.filter(match);
+   return {...u,cal:foods.reduce((a,x)=>a+num(x.cal),0),exercise:exercise.reduce((a,x)=>a+num(x.cal),0),protein:foods.reduce((a,x)=>a+num(x.protein),0),fiber:foods.reduce((a,x)=>a+num(x.fiber),0),recorded:foods.length>0||exercise.length>0};
+ });
+ const cols=en?['Date','Intake','Burn','Protein','Fiber']:['日期','摄入','运动','蛋白','纤维'];
+ $('periodTitle').textContent=heading;$('weekLabel').textContent=periodName;
+ // Monthly report uses week-sized groupings so the table stays readable on mobile.
+ let display=byUnit;
+ if(reportPeriod==='month'){
+   display=[];
+   for(let i=0;i<byUnit.length;i+=7){
+     const batch=byUnit.slice(i,i+7);
+     display.push({label:batch[0].label+'–'+batch[batch.length-1].label,recorded:batch.some(x=>x.recorded),
+       ...Object.fromEntries(['cal','exercise','protein','fiber'].map(k=>[k,batch.reduce((sum,x)=>sum+x[k],0)]))});
+   }
+ }
+ $('weekTable').innerHTML='<table><thead><tr>'+cols.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+display.map(x=>'<tr><td>'+x.label+'</td>'+['cal','exercise','protein','fiber'].map(k=>'<td>'+(x.recorded?fmt(x[k]):'—')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+ const total=k=>byUnit.reduce((a,x)=>a+x[k],0);
+ const recordDays=reportPeriod==='year'?new Set([...state.foods,...state.exercises].filter(x=>x.date.startsWith(date.slice(0,4))).map(x=>x.date)).size:reportPeriod==='month'?byUnit.filter(x=>x.recorded).length:byUnit.filter(x=>x.recorded).length;
+ const prefix=en?{week:'Weekly',month:'Monthly',year:'Yearly'}[reportPeriod]:{week:'本周',month:'本月',year:'本年'}[reportPeriod];
+ $('weekTotals').innerHTML=[[prefix+(en?' Intake':'总摄入'),fmt(total('cal'))+' kcal'],[prefix+(en?' Exercise':'总运动'),fmt(total('exercise'))+' kcal'],[en?'Days Recorded':'有记录天数',recordDays+(en?' days':' 天')],[en?'Average Calories':'平均热量',recordDays?fmt(total('cal')/recordDays)+' kcal':'—'],[en?'Average Protein':'平均蛋白',recordDays?fmt(total('protein')/recordDays)+' g':'—'],[en?'Average Fiber':'平均纤维',recordDays?fmt(total('fiber')/recordDays)+' g':'—']].map(([n,v])=>'<div class="card compact"><span class="tiny">'+n+'</span><b>'+v+'</b></div>').join('');
+ const chartUnits=reportPeriod==='month'?display:byUnit;
+ const max=Math.max(1,...chartUnits.map(x=>x.cal));
+ $('trendChart').innerHTML=chartUnits.map(x=>'<div class="barwrap"><span class="bar-value">'+(x.recorded?fmt(x.cal):'—')+'</span><div class="bar" style="height:'+(x.recorded?Math.max(4,x.cal/max*90):2)+'%"></div><small>'+x.label+'</small></div>').join('');
+ const chartTitle=document.querySelector('#trendChart')?.closest('.card')?.querySelector('.card-title');
+ if(chartTitle)chartTitle.innerHTML=(en?{week:'Weekly',month:'Monthly',year:'Yearly'}[reportPeriod]+' Calories':{week:'本周',month:'本月',year:'本年'}[reportPeriod]+'摄入热量');
+ document.querySelectorAll('[data-report]').forEach(b=>b.textContent=en?({week:'Week',month:'Month',year:'Year'}[b.dataset.report]):({week:'周报',month:'月报',year:'年报'}[b.dataset.report]));
+ const entry=document.getElementById('measurementsEntryText');
+ if(entry)entry.textContent=en?'Body Measurements':'身体围度记录';
+ const allLabel=document.getElementById('allMeasurementsLabel');if(allLabel)allLabel.textContent=en?'All Body Measurement Records':'全部身体围度记录';
+ const bodyHistoryHeading=document.getElementById('bodyList')?.previousElementSibling;
+ if(bodyHistoryHeading&&bodyHistoryHeading.classList.contains('card-title'))bodyHistoryHeading.textContent=en?'All Measurement Records':'全部身体围度记录';
+}
+
+function remove(type,id){if(!confirm(localizedText('确定删除这条记录吗？')))return;state[type]=state[type].filter(x=>x.id!==id);save();render()}
+function editFoodEntry(id){const x=state.foods.find(x=>x.id===id);if(!x)return;editFood=id;date=x.date;$('day').value=date;const f=$('foodForm');for(const k of ['name','meal','cal','protein','fiber'])f.elements[k].value=x[k];$('foodSubmit').textContent=localizedText('保存修改');$('foodCancel').classList.remove('hide');go('diary');f.scrollIntoView({behavior:'smooth'})}
+function editPresetEntry(id){const x=state.foodLibrary.find(x=>x.id===id);if(!x)return;editPreset=id;const f=$('presetForm');for(const k of ['name','cal','protein','fiber'])f.elements[k].value=x[k];$('presetSubmit').textContent=localizedText('保存修改');$('presetCancel').classList.remove('hide');f.scrollIntoView({behavior:'smooth'})}
+function cancelFood(){editFood=null;$('foodForm').reset();$('foodSubmit').textContent=localizedText('＋ 保存食物');$('foodCancel').classList.add('hide')}
+function cancelPreset(){editPreset=null;$('presetForm').reset();$('presetSubmit').textContent=localizedText('＋ 保存到食物库');$('presetCancel').classList.add('hide')}
+$('foodCancel').onclick=cancelFood;$('presetCancel').onclick=cancelPreset;
+$('foodPreset').onchange=e=>{const x=state.foodLibrary.find(x=>x.id===e.target.value);if(!x)return;for(const k of ['name','cal','protein','fiber'])$('foodForm').elements[k].value=x[k]};
+$('day').onchange=e=>{date=e.target.value||today();cancelFood();render()};
+$('foodForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),x={name:String(f.get('name')).trim(),meal:f.get('meal'),cal:num(f.get('cal')),protein:num(f.get('protein')),fiber:num(f.get('fiber'))};if(!x.name)return;if(editFood){const item=state.foods.find(y=>y.id===editFood);if(item)Object.assign(item,x)}else state.foods.push({id:uid(),date,createdAt:new Date().toISOString(),...x});save();cancelFood();render();toast('食物已保存')};
+$('presetForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),x={name:String(f.get('name')).trim(),cal:num(f.get('cal')),protein:num(f.get('protein')),fiber:num(f.get('fiber'))};if(!x.name)return;if(editPreset){const item=state.foodLibrary.find(y=>y.id===editPreset);if(item)Object.assign(item,x)}else state.foodLibrary.push({id:uid(),...x});save();cancelPreset();render();toast('食物库已保存')};
+$('exerciseForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const values={name:String(f.get('name')).trim(),minutes:num(f.get('minutes')),cal:num(f.get('cal'))};if(editExercise){const item=state.exercises.find(x=>x.id===editExercise);if(item)Object.assign(item,values)}else state.exercises.push({id:uid(),date,createdAt:new Date().toISOString(),...values});save();cancelRecordEdit('exercises');render();toast('运动已保存')};
+$('bodyForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),x={};for(const k of ['weight','waist','hip','thigh','arm','calf'])if(f.get(k)!=='')x[k]=num(f.get(k));if(!Object.keys(x).length)return alert(localizedText('请至少填写一项身体数据'));if(editBody){const item=state.body.find(y=>y.id===editBody);if(item){for(const k of ['weight','waist','hip','thigh','arm','calf'])delete item[k];Object.assign(item,x)}}else state.body.push({id:uid(),date,createdAt:new Date().toISOString(),...x});save();cancelRecordEdit('body');render();toast('身体数据已保存')};
+$('bowelForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const values={time:String(f.get('time')),type:String(f.get('type')),note:String(f.get('note')).trim()};if(editBowel){const item=state.bowels.find(x=>x.id===editBowel);if(item)Object.assign(item,values)}else state.bowels.push({id:uid(),date,createdAt:new Date().toISOString(),...values});save();cancelRecordEdit('bowels');setDefaultTime();render();toast('排便记录已保存')};
+function setDefaultTime(){const d=new Date();$('bowelForm').elements.time.value=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};setDefaultTime();
+$('goalForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);state.goals={cal:num(f.get('cal')),protein:num(f.get('protein')),fiber:num(f.get('fiber')),tdee:num(f.get('tdee'))};save();render();toast('目标已保存')};
+$('profileForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);state.profile={nickname:String(f.get('nickname')).trim(),height:f.get('height'),targetWeight:f.get('targetWeight')};save();toast('资料已保存')};
+
+
+function historyText(){const dates=[...new Set([...state.foods,...state.exercises,...state.body,...state.bowels].map(x=>x.date))].sort();let lines=['NutriTrack V2 历史记录','每日目标：'+JSON.stringify(state.goals),'用户资料：'+JSON.stringify(state.profile),''];for(const d of dates){lines.push('【'+d+'】');const fs=state.foods.filter(x=>x.date===d),es=state.exercises.filter(x=>x.date===d);for(const x of fs)lines.push(`饮食 ${x.meal} · ${x.name} · ${x.cal}kcal · 蛋白${x.protein}g · 纤维${x.fiber}g`);for(const x of es)lines.push(`运动 ${x.name} · ${x.cal}kcal · ${x.minutes||0}分钟`);for(const x of state.body.filter(x=>x.date===d))lines.push('身体 '+JSON.stringify(x));for(const x of state.bowels.filter(x=>x.date===d))lines.push(`排便 ${x.time} · Bristol ${x.type} · ${x.note}`);lines.push('')}return lines.join('\n')}
+$('copyHistory').onclick=async()=>{const txt=historyText();try{await navigator.clipboard.writeText(txt);toast('历史记录已复制')}catch{const area=document.createElement('textarea');area.value=txt;document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();if(ok)toast('历史记录已复制');else prompt(localizedText('请复制以下记录'),txt)}};
+function backup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='NutriTrack-V2-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}$('exportBtn').onclick=backup;$('downloadBackup').onclick=backup;
+function changeLang(){state.lang=state.lang==='zh'?'en':'zh';save();render()}function changeTheme(){state.theme=state.theme==='dark'?'light':'dark';save();applyPrefs()};$('langBtn').onclick=changeLang;$('langSettings').onclick=changeLang;$('themeBtn').onclick=changeTheme;$('themeSettings').onclick=changeTheme;
+applyPrefs();render();
+</script><script>
+(function(){
+const ORDER_KEY='nutritrack-v2-widget-order-grouped';
+const sections=['home','diary','body','trends'];
+let order={};try{order=JSON.parse(localStorage.getItem(ORDER_KEY)||'{}')||{}}catch(e){}
+const zh=()=>document.documentElement.lang!=='en';
+function keyFor(el){return el.id||('widget-'+Array.from(el.parentElement.children).filter(x=>x.classList.contains('layout-movable')).indexOf(el));}
+function groupTitleWithCard(section, cardId, groupKey){
+ const card=document.getElementById(cardId);
+ const heading=card&&card.previousElementSibling;
+ if(!card||!heading||!heading.classList.contains('section-head'))return;
+ const group=document.createElement('div');
+ group.className='layout-movable widget-group';
+ group.dataset.widgetKey=groupKey;
+ heading.parentNode.insertBefore(group,heading);
+ // One move control for the whole section: title + action + content.
+ const controls=heading.querySelector('.layout-controls');
+ if(controls)group.appendChild(controls);
+ [heading,card].forEach(el=>{
+   el.classList.remove('layout-movable');
+   const extra=el.querySelector(':scope > .layout-controls');if(extra)extra.remove();
+   group.appendChild(el);
+ });
+}
+function groupNutritionWithSummary(){
+ const section=document.getElementById('home');
+ if(!section)return;
+ const nutrition=section.querySelector(':scope > .card.layout-movable');
+ const summary=section.querySelector(':scope > .kpis.layout-movable');
+ if(!nutrition||!summary)return;
+ const group=document.createElement('div');
+ group.className='layout-movable widget-group nutrition-summary-group';
+ group.dataset.widgetKey='home-nutrition-summary';
+ nutrition.parentNode.insertBefore(group,nutrition);
+ const controls=nutrition.querySelector(':scope > .layout-controls');
+ if(controls)group.appendChild(controls);
+ [nutrition,summary].forEach(el=>{
+  el.classList.remove('layout-movable');
+  const extra=el.querySelector(':scope > .layout-controls');
+  if(extra)extra.remove();
+  group.appendChild(el);
+ });
+}
+function groupBodyPair(section, firstTitle, secondTitle, key){
+ const cards=Array.from(section.children).filter(el=>el.classList.contains('card')&&el.classList.contains('layout-movable'));
+ const first=cards.find(el=>el.querySelector('.card-title')?.textContent.trim().includes(firstTitle));
+ const second=cards.find(el=>el.querySelector('.card-title')?.textContent.trim().includes(secondTitle));
+ if(!first||!second)return;
+ const group=document.createElement('div');group.className='layout-movable widget-group body-combined-group';group.dataset.widgetKey=key;
+ first.parentNode.insertBefore(group,first);
+ const controls=first.querySelector(':scope > .layout-controls');if(controls)group.appendChild(controls);
+ [first,second].forEach(el=>{el.classList.remove('layout-movable');el.querySelector(':scope > .layout-controls')?.remove();group.appendChild(el)});
+}
+function groupExercisePair(section){
+ const first=Array.from(section.children).find(el=>el.classList.contains('layout-movable')&&el.querySelector('.card-title')?.getAttribute('data-i18n')==='addExercise');
+ const second=document.getElementById('exerciseList');if(!first||!second)return;
+ const group=document.createElement('div');group.className='layout-movable widget-group body-combined-group';group.dataset.widgetKey='body-exercise-combined';
+ first.parentNode.insertBefore(group,first);
+ const controls=first.querySelector(':scope > .layout-controls');if(controls)group.appendChild(controls);
+ [first,second].forEach(el=>{el.classList.remove('layout-movable');el.querySelector(':scope > .layout-controls')?.remove();group.appendChild(el)});
+}
+function collapseFoodLibrary(){
+ const section=document.getElementById('diary');
+ const card=Array.from(section.children).find(el=>el.classList.contains('card')&&el.querySelector('.card-title')?.getAttribute('data-i18n')==='libraryManage');
+ if(!card||card.querySelector('.food-library-details'))return;
+ const list=document.getElementById('presetList');if(!list)return;
+ const details=document.createElement('details');details.className='food-library-details';
+ const summary=document.createElement('summary');summary.className='food-library-button';
+ summary.innerHTML='<span id="viewFoodLibraryText">查看食物库</span><span class="library-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>';
+ details.appendChild(summary);list.parentNode.insertBefore(details,list);details.appendChild(list);
+ // Add and edit food form remains visible at all times.
+}
+function collapseExportHistory(){
+ const card=document.getElementById('copyHistory')?.closest('.card');if(!card||card.querySelector('.export-details'))return;
+ const details=document.createElement('details');details.className='export-details';
+ const summary=document.createElement('summary');summary.className='food-library-button';
+ summary.innerHTML='<span id="viewExportText">记录导出</span><span class="library-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>';
+ details.appendChild(summary);
+ const title=card.querySelector(':scope > .card-title');if(title)title.remove();
+ for(const id of ['copyHistory','downloadBackup']){const el=document.getElementById(id);if(el)details.appendChild(el)}
+ card.appendChild(details);
+}
+function compactProfile(){
+ const profile=document.getElementById('profileOverview');if(!profile)return;
+ profile.classList.add('profile-no-reorder');
+ profile.querySelector('[data-layout-toolbar]')?.remove();
+ profile.querySelectorAll('.layout-controls').forEach(el=>el.remove());
+ profile.querySelectorAll('.layout-movable').forEach(el=>el.classList.remove('layout-movable'));
+}
+function updateCompactLabels(){
+ const isZh=document.documentElement.lang!=='en';
+ const library=document.getElementById('viewFoodLibraryText');if(library)library.textContent=isZh?'查看食物库':'View Food Library';
+ const exp=document.getElementById('viewExportText');if(exp)exp.textContent=isZh?'记录导出':'Export Records';
+}
+function moveToolbarsToBottom(){
+ document.querySelectorAll('[data-layout-toolbar]').forEach(toolbar=>{
+  const section=toolbar.parentElement;if(section) section.appendChild(toolbar);
+ });
+}
+function init(){
+ groupNutritionWithSummary();
+ groupBodyPair(document.getElementById('body'),'身体围度记录','全部身体围度记录','body-measurements-combined');
+ const measurementGroup=document.querySelector('#body > [data-widget-key="body-measurements-combined"]');
+ if(measurementGroup){
+   const trends=document.getElementById('trends');
+   const wrapper=document.createElement('div');
+   wrapper.className='card layout-movable measurement-portal';
+   wrapper.dataset.widgetKey='trends-measurements';
+   wrapper.innerHTML='<div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><button class="subpage-entry" type="button" id="measurementsEntry" onclick="toggleMeasurements()"> <span id="measurementsEntryText">身体围度记录</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 18 6-6-6-6"/></svg></button><div id="measurementsPanel" class="hide"></div>';
+   trends.appendChild(wrapper);
+   measurementGroup.classList.remove('layout-movable');
+   measurementGroup.querySelectorAll('.layout-controls').forEach(x=>x.remove());
+   measurementGroup.classList.remove('card');
+   wrapper.querySelector('#measurementsPanel').appendChild(measurementGroup);
+   measurementGroup.querySelectorAll(':scope > .card').forEach(c=>{c.classList.add('measurement-inner-card');});
+   const historyList=document.getElementById('bodyList');
+   if(historyList){
+     const historyCard=historyList.closest('.measurement-inner-card');
+     const disclosure=document.createElement('details');
+     disclosure.className='measurement-history-disclosure';
+     const heading=document.createElement('summary');
+     heading.innerHTML='<span id="allMeasurementsLabel">全部身体围度记录</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+     disclosure.appendChild(heading);
+     historyList.parentNode.insertBefore(disclosure,historyList);
+     disclosure.appendChild(historyList);
+     if(historyCard)historyCard.style.marginTop='0';
+   }
+ }
+
+ groupExercisePair(document.getElementById('body'));
+ collapseFoodLibrary();
+ collapseExportHistory();
+ compactProfile();
+ groupTitleWithCard(document.getElementById('home'),'homeMeals','home-meals-group');
+ groupTitleWithCard(document.getElementById('home'),'bowelSummary','home-bowel-group');
+ groupTitleWithCard(document.getElementById('diary'),'foodList','diary-food-group');
+ for(const sid of sections){const section=document.getElementById(sid);if(!section)continue;
+  const items=Array.from(section.children).filter(x=>x.classList.contains('layout-movable'));
+  items.forEach((el,i)=>{if(!el.dataset.widgetKey)el.dataset.widgetKey=el.id||sid+'-item-'+i});
+  const saved=order[sid];if(Array.isArray(saved)){
+   const byKey=new Map(items.map(el=>[el.dataset.widgetKey,el]));
+   // Reorder only direct widget elements, keep toolbar at the beginning.
+   const ordered=[...saved.map(k=>byKey.get(k)).filter(Boolean),...items.filter(x=>!saved.includes(x.dataset.widgetKey))];
+   ordered.forEach(el=>section.appendChild(el));
+  }
+ }
+ moveToolbarsToBottom();
+ updateLabels();
+}
+function updateLabels(){updateCompactLabels();document.querySelectorAll('[data-layout-toggle]').forEach(b=>b.textContent=(zh()?'调整位置':'Reorder')+' ⇅');}
+document.addEventListener('click',e=>{
+ const toggle=e.target.closest('[data-layout-toggle]');if(toggle){const section=toggle.closest('section,#profileOverview');if(!section)return;section.classList.toggle('layout-editing');toggle.textContent=section.classList.contains('layout-editing')?(zh()?'完成':'Done'):(zh()?'调整位置 ⇅':'Reorder ⇅');return;}
+ const btn=e.target.closest('[data-move]');if(!btn)return;
+ const item=btn.closest('.layout-movable'),parent=item&&item.parentElement;if(!parent)return;
+ const items=Array.from(parent.children).filter(x=>x.classList.contains('layout-movable'));
+ const idx=items.indexOf(item),dir=btn.dataset.move;
+ if(dir==='up'&&idx>0)parent.insertBefore(item,items[idx-1]);
+ else if(dir==='down'&&idx>=0&&idx<items.length-1)parent.insertBefore(items[idx+1],item);
+ order[parent.id]=Array.from(parent.children).filter(x=>x.classList.contains('layout-movable')).map(x=>x.dataset.widgetKey);
+ try{localStorage.setItem(ORDER_KEY,JSON.stringify(order))}catch(e){}
+});
+const obs=new MutationObserver(updateLabels);obs.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+init();
+})();
+</script>
+<style id="menu-edit-polish">
+#bowelList .item{display:flex;align-items:center;gap:10px;width:100%}
+#bowelList .item>div:first-child{flex:1;min-width:0}
+#bowelList .item>.item-menu{margin-left:auto;flex-shrink:0}
+.item-menu>summary{touch-action:manipulation}
+.record-edit-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
+.record-edit-actions .secondary{flex:1;padding:11px 8px}
+</style>
+<script>
+function cancelRecordEdit(type){const config={exercises:['exerciseForm','exerciseCancel','exerciseSave'],body:['bodyForm','bodyCancel','bodySave'],bowels:['bowelForm','bowelCancel','bowelSave']}[type];if(!config)return;const [form,cancel,save]=config;document.getElementById(form).reset();document.getElementById(cancel).classList.add('hide');document.getElementById(save).textContent=(state.lang==='zh'?{exercises:'＋ 保存运动',body:'＋ 保存一条身体记录',bowels:'＋ 保存排便记录'}:{exercises:'＋ Save Exercise',body:'＋ Save Body Measurements',bowels:'＋ Save Bowel Log'})[type];if(type==='exercises')editExercise=null;if(type==='body')editBody=null;if(type==='bowels')editBowel=null;}
+function beginRecordEdit(type,id){const config={exercises:['exerciseForm','exerciseCancel','exerciseSave','exercises'],body:['bodyForm','bodyCancel','bodySave','body'],bowels:['bowelForm','bowelCancel','bowelSave','bowels']}[type];if(!config)return;const [formId,cancelId,saveId,key]=config;const item=state[key].find(x=>x.id===id);if(!item)return;cancelRecordEdit(type);if(type==='exercises')editExercise=id;if(type==='body')editBody=id;if(type==='bowels')editBowel=id;const form=document.getElementById(formId);for(const input of form.querySelectorAll('[name]'))input.value=item[input.name]??'';document.getElementById(cancelId).classList.remove('hide');document.getElementById(saveId).textContent=state.lang==='zh'?'保存修改':'Save Changes';form.scrollIntoView({behavior:'smooth',block:'center'});}
+function editExerciseEntry(id){beginRecordEdit('exercises',id)}
+function editBodyEntry(id){beginRecordEdit('body',id)}
+function editBowelEntry(id){beginRecordEdit('bowels',id)}
+// Keep only one record menu open; dismiss on outside taps and Escape.
+document.addEventListener('click',function(e){const summary=e.target.closest('.item-menu > summary');if(summary){const current=summary.parentElement;document.querySelectorAll('.item-menu[open]').forEach(d=>{if(d!==current)d.open=false});return;}if(!e.target.closest('.item-menu'))document.querySelectorAll('.item-menu[open]').forEach(d=>d.open=false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('.item-menu[open]').forEach(d=>d.open=false)});
+</script>
+<script id="date-arrow-handler-v2">document.getElementById('dateArrowV2')?.addEventListener('click',function(){const el=document.getElementById('day');if(!el)return;try{if(typeof el.showPicker==='function'){el.showPicker();return;}}catch(e){}el.focus();el.click();});</script><script id="date-visible-sync-v3">(function(){const d=document.getElementById('day'),label=document.getElementById('dateVisibleV3');if(!d||!label)return;const sync=()=>{if(d.value)label.textContent=d.value.replace(/-/g,'/');};d.addEventListener('change',sync);d.addEventListener('input',sync);const observer=new MutationObserver(sync);observer.observe(d,{attributes:true,attributeFilter:['value']});sync();requestAnimationFrame(sync);})();</script></body></html>
