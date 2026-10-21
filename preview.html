@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><title>NutriTrack V2</title><meta name="theme-color" content="#f5f5f7"/><meta name="application-name" content="NutriTrack V2"/><meta name="apple-mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="default"/><meta name="apple-mobile-web-app-title" content="NutriTrack"/><link rel="manifest" href="/manifest.webmanifest?v=correct-cat-20261021-v4"/><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=correct-cat-20261021-v4"/><link rel="apple-touch-icon" href="/icon-192.png?v=correct-cat-20261021-v4"/><style>
+:root{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#24262b;background:#f5f5f7}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer;border:0}.app{max-width:510px;margin:auto;min-height:100dvh;padding:28px 19px 104px}.eyebrow{font-size:10px;letter-spacing:2px;color:#9999a5;font-weight:700}.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}h1{font-size:34px;letter-spacing:-1.4px;margin:5px 0 3px;font-weight:750}h2{font-size:20px;letter-spacing:-.6px;margin:25px 0 13px}.muted{color:#93939f;font-size:12px}.date{border:0;background:white;border-radius:16px;padding:12px;color:#444;max-width:155px}.card{background:white;border-radius:25px;padding:23px;margin-bottom:13px;box-shadow:0 5px 22px #23233b05}.card-title{display:flex;justify-content:space-between;font-size:14px;font-weight:700}.rings{position:relative;width:240px;height:240px;margin:15px auto 8px}.rings svg{width:100%;height:100%;transform:rotate(-90deg)}.center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}.big{font-size:36px;letter-spacing:-1.4px;font-weight:760}.mini{font-size:11px;color:#9999a3}.metrics{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid #e9eaed;padding-top:18px;margin-top:16px;text-align:center}.metric{border-right:1px solid #e9eaed}.metric:last-child{border:0}.dot{height:5px;width:23px;border-radius:8px;margin:0 auto 9px}.metric b{display:block;font-size:18px;margin:4px}.metric span{font-size:10px;color:#8d8d99}.row{display:flex;justify-content:space-between;align-items:center;gap:12px}.item{display:flex;gap:13px;align-items:center;padding:12px 0;border-bottom:1px solid #e9eaed}.item:last-child{border:0}.ico{background:#eef0f2;color:#505761;width:43px;height:43px;display:grid;place-items:center;border-radius:14px;font-size:21px}.item b{font-size:14px}.item p{margin:4px 0 0;font-size:12px;color:#9999a3}.right{text-align:right;margin-left:auto}.pill{background:#eef0f2;color:#444b54;border-radius:100px;padding:8px 13px;font-weight:650;font-size:12px}.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);max-width:510px;width:100%;display:grid;grid-template-columns:repeat(4,1fr);background:#ffffffed;backdrop-filter:blur(18px);border-top:1px solid #eee;padding:12px 10px calc(13px + env(safe-area-inset-bottom));z-index:10}.nav button{background:transparent;color:#9b9ba5;display:flex;align-items:center;flex-direction:column;gap:5px;font-size:11px}.nav button.active{color:#30343b;font-weight:750}.nav i{font-size:23px;font-style:normal}.hide{display:none!important}.field{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#777783;margin-bottom:12px}.field input,.field select{border:1px solid #ededf1;background:#f6f6f8;border-radius:12px;padding:12px;color:#30303a;width:100%;outline-color:#626a75}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}.primary{width:100%;background:#292d34;color:#fff;border-radius:15px;padding:14px;font-weight:750;margin-top:6px}.secondary{background:#f0f1f3;color:#676776;padding:9px 12px;border-radius:12px}.danger{color:#525a64;background:#eef0f2;padding:7px 10px;border-radius:10px}.empty{padding:22px;text-align:center;color:#a2a2ac;font-size:13px}.summary{font-size:13px;color:#8e8e99}.summary strong{font-size:26px;color:#24262b}.chart{display:flex;align-items:flex-end;gap:9px;height:130px;border-bottom:1px solid #eee;padding-top:12px}.barwrap{flex:1;display:flex;flex-direction:column;justify-content:end;align-items:center;height:100%;gap:6px}.bar{width:65%;border-radius:8px 8px 0 0;background:#606670;min-height:3px}.barwrap small{font-size:9px;color:#999}.notice{font-size:11px;color:#aaa;line-height:1.5;margin-top:12px}.tabs{display:flex;gap:7px;margin:12px 0}.tabs button{background:#edeef0;color:#898995;border-radius:20px;padding:8px 12px}.tabs button.on{background:#e5e8ec;color:#424a54}.smalltext{font-size:12px;color:#999}.section-head{display:flex;align-items:center;justify-content:space-between}input[type=date]{min-width:0} @media(min-width:600px){body{background:#eeeeF3}.app{background:#f5f5f7;box-shadow:0 0 50px #0000000b}}
+
+:root{--bg:#f5f5f7;--card:#fff;--ink:#24262b;--sub:#93939f;--line:#f0f0f3;--pink:#292d34}body.dark{--bg:#17171d;--card:#25252d;--ink:#f5f5f7;--sub:#a4a4b1;--line:#383840;--pink:#e4e6ea;background:var(--bg);color:var(--ink)}body{background:var(--bg);color:var(--ink)}.app{padding-bottom:95px}.card,.date{background:var(--card);color:var(--ink)}.item,.metrics{border-color:var(--line)}.item p,.muted,.smalltext{color:var(--sub)}.nav{width:min(calc(100% - 32px),410px);bottom:calc(10px + env(safe-area-inset-bottom));border:1px solid var(--line);border-radius:22px;padding:7px 8px;box-shadow:0 8px 28px #1e1e3517;background:var(--card);grid-template-columns:repeat(5,1fr)}.nav button{gap:2px;font-size:9px;min-height:43px;color:var(--sub)}.nav i{font-size:18px}.nav button.active{color:#30343b}.field input,.field select,.field textarea{background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:11px;width:100%}.field textarea{min-height:70px}.secondary{background:var(--bg);color:var(--ink)}.card-title{gap:10px;align-items:center}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{font-size:11px}.compact{padding:14px 18px}.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kpis .card{margin:0}.kpis b{display:block;font-size:19px;margin-top:5px}.progress{height:6px;border-radius:20px;background:var(--line);overflow:hidden;margin:7px 0}.progress>div{height:100%;border-radius:20px}.tag{font-size:10px;border-radius:8px;padding:5px 8px;background:#e9ecef;color:#525a64}.daygrid{overflow:auto}.daygrid table{width:100%;border-collapse:collapse;font-size:11px;min-width:410px}.daygrid th,.daygrid td{text-align:right;padding:10px 5px;border-bottom:1px solid var(--line)}.daygrid th:first-child,.daygrid td:first-child{text-align:left}.tiny{font-size:11px;color:var(--sub)}.inline-select{max-width:100%;width:100%}.modebtn{border-radius:12px;padding:8px 10px;background:var(--card);color:var(--ink)}.head{gap:10px}.date{max-width:138px;font-size:12px}.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#24262b;color:#fff;border-radius:16px;padding:13px 20px;z-index:50;box-shadow:0 8px 30px #0002;max-width:90%;text-align:center}.empty{color:var(--sub)}.primary{background:var(--pink)}.pill{background:#eef0f2}.muted-label{font-size:12px;color:var(--sub)}.fieldrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}@media(max-width:380px){.rings{width:210px;height:210px}.app{padding-left:14px;padding-right:14px}.card{padding:18px}.date{max-width:125px}.nav{width:calc(100% - 20px)}}
+.nav .nav-icon{width:21px;height:21px;display:block;flex-shrink:0}.nav button{gap:4px}.nav{max-width:390px} 
+/* NutriTrack V2 — monochrome design system */
+:root{--bg:#f5f5f7;--card:#fff;--ink:#22252b;--sub:#82858c;--line:#e8e9ec;--pink:#292d34;--accent:#292d34;--accent-ink:#fff}
+body.dark{--bg:#111216;--card:#1e2025;--ink:#f3f4f6;--sub:#a3a7b0;--line:#373a41;--pink:#e4e6ea;--accent:#e4e6ea;--accent-ink:#1c1e23}
+.primary{background:var(--accent);color:var(--accent-ink);box-shadow:none}
+.pill{background:#e9eaed;color:#353940}
+.nav button.active{color:var(--ink)}
+.nav{box-shadow:0 8px 25px #14171c13}
+.ico{background:#ebedf0;color:#444b54}
+.danger{background:#eff0f2;color:#42464e}
+.tag{background:#e9eaed;color:#41454d}
+.tabs button.on{background:#e1e3e7;color:#292d34}
+.field input:focus,.field select:focus,.field textarea:focus{outline-color:#767b85}
+.bar{background:#6f747d}
+.dot{filter:grayscale(1)}
+body.dark .pill,body.dark .ico,body.dark .danger,body.dark .tag,body.dark .tabs button.on{background:#32353c;color:#e8e9ed}
+body.dark .nav button.active{color:#f4f5f6}
+body.dark .rings svg circle:not([id]){stroke:#383b42}
+body.dark .metric{border-color:var(--line)}
+
+/* Theme palette selector: shared tokens for all pages and light/dark modes */
+:root{--ring1:#292d34;--ring2:#777d87;--ring3:#adb2ba;--soft-accent:#eef0f2}
+body[data-palette="mono"]{--accent:#292d34;--pink:#292d34;--ring1:#292d34;--ring2:#777d87;--ring3:#adb2ba;--soft-accent:#f5f5f7;--bg:#f5f5f7}
+body.dark[data-palette="mono"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#777d87;--pink:#777d87;--accent-ink:#121418;--ring1:#292d34;--ring2:#777d87;--ring3:#adb2ba;--soft-accent:#30343a}
+body[data-palette="sage"]{--accent:#658b78;--pink:#658b78;--ring1:#658b78;--ring2:#99b5a4;--ring3:#c3d6c9;--soft-accent:#f2f6f2;--bg:#f2f6f2}
+body.dark[data-palette="sage"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#99b5a4;--pink:#99b5a4;--accent-ink:#121418;--ring1:#658b78;--ring2:#99b5a4;--ring3:#c3d6c9;--soft-accent:#30343a}
+body[data-palette="cream"]{--accent:#b88768;--pink:#b88768;--ring1:#b88768;--ring2:#d3ab91;--ring3:#e2cbb4;--soft-accent:#faf7f1;--bg:#faf7f1}
+body.dark[data-palette="cream"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#d3ab91;--pink:#d3ab91;--accent-ink:#121418;--ring1:#b88768;--ring2:#d3ab91;--ring3:#e2cbb4;--soft-accent:#30343a}
+body[data-palette="lavender"]{--accent:#8d79ba;--pink:#8d79ba;--ring1:#8d79ba;--ring2:#b0a0d0;--ring3:#d0c3e4;--soft-accent:#f7f5fb;--bg:#f7f5fb}
+body.dark[data-palette="lavender"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#b0a0d0;--pink:#b0a0d0;--accent-ink:#121418;--ring1:#8d79ba;--ring2:#b0a0d0;--ring3:#d0c3e4;--soft-accent:#30343a}
+body[data-palette="blue"]{--accent:#6886ac;--pink:#6886ac;--ring1:#6886ac;--ring2:#93aac4;--ring3:#c0cfdf;--soft-accent:#f3f6fa;--bg:#f3f6fa}
+body.dark[data-palette="blue"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#93aac4;--pink:#93aac4;--accent-ink:#121418;--ring1:#6886ac;--ring2:#93aac4;--ring3:#c0cfdf;--soft-accent:#30343a}
+body[data-palette="rose"]{--accent:#c17e95;--pink:#c17e95;--ring1:#c17e95;--ring2:#d9a7b7;--ring3:#edcbd5;--soft-accent:#fcf6f8;--bg:#fcf6f8}
+body.dark[data-palette="rose"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#d9a7b7;--pink:#d9a7b7;--accent-ink:#121418;--ring1:#c17e95;--ring2:#d9a7b7;--ring3:#edcbd5;--soft-accent:#30343a}
+body[data-palette="mint"]{--accent:#4e9b8c;--pink:#4e9b8c;--ring1:#4e9b8c;--ring2:#84bcb0;--ring3:#b7dcd3;--soft-accent:#f2f9f7;--bg:#f2f9f7}
+body.dark[data-palette="mint"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#84bcb0;--pink:#84bcb0;--accent-ink:#121418;--ring1:#4e9b8c;--ring2:#84bcb0;--ring3:#b7dcd3;--soft-accent:#30343a}
+body[data-palette="terracotta"]{--accent:#b87556;--pink:#b87556;--ring1:#b87556;--ring2:#d6a088;--ring3:#e8c4b3;--soft-accent:#faf5f0;--bg:#faf5f0}
+body.dark[data-palette="terracotta"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#d6a088;--pink:#d6a088;--accent-ink:#121418;--ring1:#b87556;--ring2:#d6a088;--ring3:#e8c4b3;--soft-accent:#30343a}
+.app{background:var(--bg)}.primary{background:var(--accent);color:var(--accent-ink)}
+.pill,.tag,.ico,.danger,.tabs button.on{background:var(--soft-accent);color:var(--ink)}
+.nav button.active{color:var(--accent)!important}.bar{background:var(--ring1)}
+#calRing{stroke:var(--ring1)}#proteinRing{stroke:var(--ring2)}#fiberRing{stroke:var(--ring3)}
+.rings .metric{border-color:var(--line)}.rings svg circle:not([id]){stroke:var(--line)}
+body.dark .rings svg circle:not([id]){stroke:var(--line)}
+.metrics .metric:nth-child(1) .dot{background:var(--ring1)!important}.metrics .metric:nth-child(2) .dot{background:var(--ring2)!important}.metrics .metric:nth-child(3) .dot{background:var(--ring3)!important}.dot{filter:none}
+.palette-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 5px;margin-top:12px}
+.palette-option{border:1px solid transparent;border-radius:14px;padding:9px 2px 7px;background:transparent;color:var(--ink);text-align:center;min-width:0;display:flex;align-items:center;flex-direction:column;gap:6px;cursor:pointer;transition:background .15s ease}
+.palette-option[aria-pressed="true"]{background:var(--soft,var(--line));border-color:var(--line)}
+.palette-option:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.palette-swatches{display:block;position:relative;width:37px;height:37px;border-radius:50%;overflow:hidden;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+.palette-swatches i{display:block;position:absolute;border:0;border-radius:0;width:100%;height:100%;inset:0}
+.palette-swatches i:nth-child(1){clip-path:polygon(0 0,100% 0,0 100%)}
+.palette-swatches i:nth-child(2){clip-path:polygon(100% 0,100% 100%,0 100%)}
+.palette-swatches i:nth-child(3){clip-path:polygon(0 100%,100% 100%,50% 50%)}
+.palette-option .palette-name{font-size:10px;font-weight:600;line-height:1.25;white-space:normal;overflow-wrap:anywhere}
+.palette-option .palette-check{position:absolute;right:-3px;bottom:-3px;display:grid;place-items:center;width:15px;height:15px;border-radius:50%;background:var(--accent);color:var(--card);font-size:10px;font-weight:800;border:2px solid var(--card)}
+.palette-preview{position:relative;width:37px;height:37px}
+@media(max-width:360px){.palette-grid{gap:5px 2px}.palette-option{padding:7px 1px}.palette-option .palette-name{font-size:9px}}
+.settings-entry{display:flex;align-items:center;gap:12px;width:100%;padding:12px 0;background:transparent;color:var(--ink);font-size:14px;font-weight:650;text-align:left}.settings-entry-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:var(--soft-accent);color:var(--accent);font-size:21px}.settings-chevron{font-size:24px;color:var(--sub);font-weight:400;margin-left:auto}.settings-entry-right{display:flex;align-items:center;gap:8px;margin-left:auto;color:var(--sub);font-size:12px;font-weight:400}.settings-entry-right .settings-chevron{margin-left:3px}.palette-current-dot{width:14px;height:14px;border-radius:50%}.settings-back{display:block;background:transparent;color:var(--accent);padding:3px 2px 16px;font-size:15px;font-weight:600}.settings-back span{vertical-align:middle}#settingsPanel .card-title{margin-bottom:12px}#settingsPanel .item{justify-content:space-between}#settingsPanel .settings-entry{border-top:1px solid var(--line);margin-top:4px}#palettePanel .card{margin-top:0}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+
+/* Compact food record actions: calories before right-aligned vertical menu */
+#foodList .item > div:first-child{min-width:0;flex:1}
+#foodList .food-record-actions{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:9px;margin-left:auto;flex-shrink:0;text-align:right}
+#foodList .food-calories{white-space:nowrap;font-size:13px}
+#foodList .food-record-actions .item-menu{margin-left:0;flex-shrink:0}
+#foodList .food-record-actions .item-menu>summary{width:30px!important;height:30px!important}
+/* Save left, cancel right, in the same row only when editing */
+.food-form-actions{display:flex;align-items:stretch;gap:12px;width:100%;margin-top:6px}
+.food-form-actions #foodSubmit{flex:1;min-width:0;width:auto;margin-top:0}
+.food-form-actions #foodCancel:not(.hide){display:block;flex:1;min-width:0;text-align:center;font-weight:650}
+
+/* Header date fine alignment: move date text right and calendar arrow left */
+#day.date{padding-left:20px!important;padding-right:17px!important;}
+#day.date::-webkit-calendar-picker-indicator{position:relative!important;left:-7px!important;margin-right:0!important;}
+@media(max-width:380px){#day.date{padding-left:16px!important;padding-right:15px!important;}#day.date::-webkit-calendar-picker-indicator{left:-5px!important;}}
+</style><style>
+/* Unified move groups and refined appearance */
+.widget-group{position:relative;margin-bottom:14px}
+.widget-group>.section-head{margin:0 0 12px;padding:0 2px}
+.widget-group>.card{margin:0}
+.layout-editing .widget-group{padding:40px 4px 4px;border-radius:22px}
+.layout-editing .widget-group>.layout-controls{top:5px;right:7px}
+.layout-editing .widget-group>.section-head{padding-right:0}
+.layout-editing .layout-movable:not(.widget-group){padding-top:38px}
+#themeBtn{display:inline-flex;align-items:center;justify-content:center;min-width:36px;min-height:36px;padding:8px}
+#themeBtn svg{display:block;flex-shrink:0}
+/* Compact per-page card ordering controls */
+.layout-toolbar{display:flex;justify-content:flex-end;align-items:center;gap:9px;margin:0 0 10px;padding:0 2px}
+.layout-toggle{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:11px;padding:7px 12px;font-size:12px;font-weight:650}
+.layout-hint{font-size:11px;color:var(--sub)}
+.layout-controls{display:none;position:absolute;right:10px;top:9px;gap:5px;z-index:2}
+.layout-editing .layout-movable{position:relative;outline:1px dashed var(--line);outline-offset:2px}
+.layout-editing .layout-movable>.layout-controls{display:flex}
+.layout-controls button{width:30px;height:28px;border-radius:9px;background:var(--card);color:var(--ink);border:1px solid var(--line);font-size:16px;line-height:1}
+.layout-editing .layout-movable>.card-title,.layout-editing .layout-movable>h2{padding-right:76px}
+.layout-editing .layout-movable{padding-top:40px}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+</style><style>
+/* Nutrition ring and four summary metrics are a single reorderable widget. */
+.nutrition-summary-group{display:flex;flex-direction:column;gap:12px}
+.nutrition-summary-group>.card{margin:0}
+.nutrition-summary-group>.kpis{margin:0}
+.layout-editing .nutrition-summary-group{padding:40px 4px 4px}
+.layout-editing .nutrition-summary-group>.layout-controls{top:5px;right:7px}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+</style>
+<style>
+/* Compact reorder widgets: toolbar after content, no oversized padding. */
+.layout-toolbar{margin:14px 0 8px!important;padding:0 4px!important}
+.layout-toggle{padding:7px 11px!important;font-size:12px!important}
+.layout-editing .layout-movable{padding-top:34px!important}
+.layout-editing .widget-group{padding:34px 0 0!important}
+.layout-editing .widget-group>.layout-controls{top:3px!important;right:6px!important}
+.layout-editing .layout-movable>.layout-controls{top:3px!important;right:6px!important}
+.layout-controls button{width:29px!important;height:27px!important;font-size:15px!important}
+.body-combined-group{display:flex;flex-direction:column;gap:10px}
+.body-combined-group>.card{margin:0!important}
+.food-library-details{width:100%}
+.food-library-button{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;font-weight:650;font-size:15px;min-height:25px}
+.food-library-button::-webkit-details-marker{display:none}
+.library-chevron{font-size:23px;font-weight:400;color:var(--sub);transition:transform .2s}
+.food-library-details[open] .library-chevron{transform:rotate(180deg)}
+.food-library-details[open] .food-library-button{padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+
+/* Compact secondary actions and data rows */
+#settingsEntryCard{padding:0!important;margin-top:10px!important;border-radius:16px!important;overflow:hidden}
+#settingsEntryCard .settings-entry{min-height:49px!important;padding:11px 15px!important;gap:10px!important;font-size:14px!important}
+#settingsEntryCard .settings-entry-icon{font-size:17px!important;width:22px!important;height:auto!important}
+#settingsEntryCard .settings-chevron{margin-left:auto;font-size:21px!important}
+#profileOverview .layout-toolbar,#profileOverview .layout-controls{display:none!important}
+#profileOverview .layout-movable{outline:none!important;padding-top:0!important}
+#foodList{padding:9px 16px!important}
+#foodList .item{padding:9px 0!important;min-height:0!important;gap:8px!important;margin:0!important}
+#foodList .item b{font-size:13px!important;line-height:1.35!important}
+#foodList .item p{font-size:11px!important;line-height:1.35!important;margin:3px 0 0!important}
+#foodList .actions{gap:5px!important}
+#foodList .actions button{padding:6px 9px!important;font-size:11px!important;border-radius:9px!important}
+#foodList .empty{padding:14px!important}
+.food-library-details,.export-details{width:100%}
+.food-library-details>.food-library-button,.export-details>.food-library-button{min-height:35px;padding:4px 0;font-size:14px}
+.food-library-details[open]>.food-library-button,.export-details[open]>.food-library-button{margin-bottom:9px;padding-bottom:9px;border-bottom:1px solid var(--line)}
+.export-details button{width:100%;margin-top:8px!important}
+#trends .export-details:not([open]){padding:0}
+</style><style id="compact-action-menu-css">
+.item-menu{position:relative;flex-shrink:0;margin-left:6px}
+.item-menu>summary{list-style:none;display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:var(--surface,#f2f3f5);color:var(--text,#444);font-size:20px;line-height:1;cursor:pointer;font-weight:700;letter-spacing:1px}
+.item-menu>summary::-webkit-details-marker{display:none}
+.item-menu-popup{position:absolute;right:0;top:36px;z-index:30;min-width:112px;background:var(--card,#fff);border:1px solid var(--line,#e5e5e8);border-radius:12px;padding:5px;box-shadow:0 10px 25px #0002}
+.item-menu-popup button{display:block;width:100%;text-align:left;padding:10px 12px;border:0;border-radius:8px;background:transparent;color:var(--text,#333);font-size:13px}
+.item-menu-popup button.delete-action{color:#bd5260}
+.library-chevron{display:inline-flex;align-items:center;justify-content:center;transition:transform .2s}
+.food-library-details[open]>.food-library-button .library-chevron,.export-details[open]>.food-library-button .library-chevron{transform:rotate(90deg)}
+.chart{height:175px;padding-top:24px;overflow:visible}
+.barwrap{position:relative;gap:5px}
+.bar-value{font-size:9px;line-height:1.2;color:var(--sub,#777);white-space:nowrap;font-variant-numeric:tabular-nums}
+.barwrap .bar{max-height:108px}
+</style><style id="vertical-menu-and-library-spacing-fix">
+.item-menu>summary{width:32px!important;height:32px!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:0!important;letter-spacing:normal!important;overflow:hidden!important;box-sizing:border-box!important}
+.item-menu>summary .vertical-more{display:block!important;width:19px!important;height:19px!important;flex-shrink:0!important}
+.item-menu>summary::marker{content:""}
+/* Give the food-library disclosure its own breathing room below the save button. */
+#presetForm + .food-library-details{margin-top:20px!important}
+#presetForm + .food-library-details>.food-library-button{padding-top:10px!important;padding-bottom:9px!important;min-height:43px!important}
+</style><style id="final-food-exercise-date-layout">
+/* Date icon: comfortable right-side spacing on Android Chrome */
+#day.date{padding-right:20px!important;min-width:0;box-sizing:border-box}
+#day.date::-webkit-calendar-picker-indicator{margin-right:3px;cursor:pointer}
+/* Food editing: cancel on the left, save on the right */
+.food-form-actions #foodCancel:not(.hide){order:0}
+.food-form-actions #foodSubmit{order:1}
+/* Exercise entries: calories before the far-right vertical menu */
+#exerciseList .item>div:first-child{min-width:0;flex:1}
+#exerciseList .exercise-record-actions{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:9px;margin-left:auto;flex-shrink:0;text-align:right}
+#exerciseList .exercise-calories{font-size:13px;white-space:nowrap}
+#exerciseList .exercise-record-actions .item-menu{margin-left:0;flex-shrink:0}
+#exerciseList .exercise-record-actions .item-menu>summary{width:30px!important;height:30px!important}
+
+/* Balanced home meal rows */
+#homeMeals{padding-top:6px;padding-bottom:6px}
+#homeMeals .home-meal-row{display:grid!important;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;min-height:76px;padding:14px 0!important;margin:0!important}
+#homeMeals .home-meal-row .home-meal-info{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px}
+#homeMeals .home-meal-row b{line-height:1.4}
+#homeMeals .home-meal-row p{margin:0!important;line-height:1.4}
+#homeMeals .home-meal-row .right{min-width:95px;text-align:right;align-self:center;white-space:nowrap}
+/* Date must remain fully visible; reserve room for native picker icon */
+.head{align-items:flex-start!important;gap:8px!important}
+.head>div:first-child{flex:1 1 auto;min-width:0}
+.head>div:last-child{flex:0 0 auto;min-width:0;align-items:flex-end}
+#day.date{display:block;width:157px!important;max-width:none!important;min-width:157px!important;min-height:44px;padding:10px 9px 10px 12px!important;font-size:12px!important;line-height:22px;letter-spacing:-.25px;border-radius:15px;overflow:visible}
+#day.date::-webkit-calendar-picker-indicator{margin:0 0 0 2px;padding:2px;width:16px;height:16px;opacity:.85}
+@media(max-width:380px){#day.date{width:150px!important;min-width:150px!important;font-size:11px!important}.head{gap:5px!important}.eyebrow{font-size:9px;letter-spacing:1px}}
+</style><style id="compact-bowel-exercise-date-v3">
+/* Space the saved bowel entries away from the entry form. */
+#bowelList{margin-top:18px!important}
+#bowelList .item:first-child{padding-top:8px}
+/* Compact exercise records while keeping touch-friendly menu controls. */
+#exerciseList .item{padding:8px 0!important;gap:8px!important;min-height:54px}
+#exerciseList .item b{font-size:13px!important}
+#exerciseList .item p{margin-top:2px!important;font-size:11px!important}
+#exerciseList .exercise-record-actions{gap:7px!important}
+#exerciseList .item-menu>summary{width:30px!important;height:30px!important}
+/* Reduce date field without clipping the text; pull native calendar affordance inward. */
+#day.date{width:145px!important;min-width:145px!important;max-width:145px!important;min-height:40px!important;padding:8px 10px!important;font-size:11px!important;letter-spacing:-.3px!important}
+#day.date::-webkit-calendar-picker-indicator{width:15px!important;height:15px!important;margin-right:5px!important;margin-left:0!important;padding:0!important}
+@media(max-width:380px){#day.date{width:140px!important;min-width:140px!important;max-width:140px!important;font-size:10.5px!important}}
+</style><style id="date-exercise-fine-tune-v4">
+/* Date: nudge date digits right while pulling picker arrow away from the far edge. */
+#day.date{width:148px!important;min-width:148px!important;max-width:148px!important;padding-left:18px!important;padding-right:15px!important;box-sizing:border-box!important}
+#day.date::-webkit-calendar-picker-indicator{margin-right:9px!important;margin-left:0!important;width:14px!important;height:14px!important;padding:0!important;flex-shrink:0!important}
+/* Saved exercise records only: compact the enclosing white card, not the input form. */
+#exerciseList.card{padding:8px 15px!important;border-radius:20px!important;margin-top:0!important}
+#exerciseList .item{min-height:45px!important;padding:5px 0!important;gap:8px!important}
+#exerciseList .item p{margin:1px 0 0!important;line-height:1.25!important}
+#exerciseList .item b{line-height:1.3!important}
+#exerciseList .exercise-record-actions{gap:9px!important}
+#exerciseList .item-menu>summary{width:30px!important;height:30px!important}
+@media(max-width:380px){#day.date{width:143px!important;min-width:143px!important;max-width:143px!important;padding-left:14px!important;padding-right:12px!important}}
+ 
+/* V2: compact responsive report, header date and measurement portal */
+#day.date{width:146px!important;min-width:146px!important;max-width:146px!important;padding:9px 14px 9px 12px!important;font-size:12px!important;letter-spacing:-.2px!important}
+#day.date::-webkit-calendar-picker-indicator{margin-right:0!important;width:15px!important;height:15px!important}
+.head>div:last-child{flex-shrink:0;min-width:0}
+@media(max-width:380px){#day.date{width:137px!important;min-width:137px!important;max-width:137px!important;font-size:11px!important;padding-left:8px!important;padding-right:12px!important}}
+.daygrid{overflow-x:visible!important;width:100%}
+.daygrid table{min-width:0!important;width:100%;table-layout:fixed;font-size:clamp(9px,2.5vw,11px)}
+.daygrid th,.daygrid td{padding:9px 2px!important;white-space:nowrap;overflow:hidden;text-overflow:clip;font-variant-numeric:tabular-nums}
+.daygrid th:first-child,.daygrid td:first-child{width:22%}
+.report-switch{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:13px;margin:15px 0 12px}
+.report-switch button{flex:1;padding:9px 4px;border-radius:10px;background:transparent;color:var(--sub);font-size:12px;font-weight:600}
+.report-switch button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 7px #0000000c}
+.subpage-entry{display:flex;align-items:center;justify-content:space-between;width:100%;background:transparent;color:var(--ink);padding:2px 0;font-weight:700;font-size:15px}
+#measurementsPanel{margin-top:18px}
+#measurementsPanel .card{padding:0;box-shadow:none;margin:0}
+#measurementsPanel .card-title{margin-bottom:13px}
+#measurementsPanel #bodyList{margin-top:12px}
+.measurement-history-item{display:flex;align-items:center;gap:10px;padding:13px 0}
+.measurement-details{flex:1;min-width:0}
+.measurement-details p{line-height:1.65;overflow-wrap:anywhere}
+.measurement-time{font-size:12px;font-weight:400;color:var(--sub);margin-left:5px}
+.measurement-history-item .item-menu{flex-shrink:0;margin-left:auto}
+
+.metric-label{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
+.metric-label svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;opacity:.8}
+@media(max-width:380px){.metric-label{gap:3px}.metric-label svg{width:13px;height:13px}}
+
+/* Measurements form and complete history are one expandable component. */
+.measurement-portal{padding:18px 20px!important}
+.measurement-portal .body-combined-group{display:flex;flex-direction:column;gap:18px}
+.measurement-portal .measurement-inner-card{margin:0!important;padding:0!important;background:transparent!important;box-shadow:none!important;border:0!important}
+.measurement-portal .measurement-inner-card + .measurement-inner-card{border-top:0!important;padding-top:0!important}
+.measurement-portal .measurement-inner-card > .card-title{display:none!important}
+.measurement-history-disclosure{margin-top:16px}
+.measurement-history-disclosure > summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:15px 0;font-weight:600;font-size:15px}
+.measurement-history-disclosure > summary::-webkit-details-marker{display:none}
+.measurement-history-disclosure > summary svg{width:18px;height:18px;transition:transform .2s}
+.measurement-history-disclosure[open] > summary svg{transform:rotate(90deg)}
+.measurement-history-disclosure #bodyList{padding-top:8px}
+.measurement-portal .layout-controls{display:none}
+.layout-editing .measurement-portal > .layout-controls{display:flex}
+</style><style id="date-control-clean-final">
+/* Single compact date control: explicit visible label and one custom arrow. */
+.date-control-v2{position:relative!important;flex:0 0 154px!important;width:154px!important;min-width:154px!important;max-width:154px!important;height:44px!important;background:var(--card)!important;border-radius:16px!important;overflow:hidden!important;box-sizing:border-box!important}
+.date-control-v2 .date-visible-v3{position:absolute!important;left:12px!important;right:36px!important;top:0!important;height:44px!important;display:flex!important;align-items:center!important;white-space:nowrap!important;overflow:visible!important;pointer-events:none!important;z-index:1!important;color:var(--ink)!important;font-size:12px!important;letter-spacing:0!important;font-variant-numeric:tabular-nums!important}
+.date-control-v2 #day.date{position:absolute!important;inset:0!important;display:block!important;width:100%!important;min-width:0!important;max-width:none!important;height:100%!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;opacity:0!important;cursor:pointer!important;z-index:2!important;box-sizing:border-box!important}
+.date-control-v2 #day.date::-webkit-calendar-picker-indicator{position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;margin:0!important;padding:0!important;opacity:0!important;cursor:pointer!important}
+.date-control-v2 .date-arrow-v2{position:absolute!important;right:9px!important;top:50%!important;transform:translateY(-50%)!important;width:26px!important;height:32px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:transparent!important;border:0!important;padding:0!important;color:var(--ink)!important;z-index:3!important;cursor:pointer!important}
+@media(max-width:380px){.date-control-v2{flex-basis:154px!important;width:154px!important;min-width:154px!important;max-width:154px!important}}
+body[data-palette="nutrition"]{--accent:#E65B5B;--pink:#E65B5B;--ring1:#E65B5B;--ring2:#E4B83F;--ring3:#45A878;--soft-accent:#fff6f5;--bg:#f5f5f7}
+body.dark[data-palette="nutrition"]{--bg:#15171b;--card:#24262b;--ink:#f3f4f6;--sub:#aab0b8;--line:#393d44;--accent:#E65B5B;--pink:#E65B5B;--accent-ink:#fff;--ring1:#E65B5B;--ring2:#E4B83F;--ring3:#45A878;--soft-accent:#30343a}
+body[data-palette="nutrition"] .dot{filter:none!important}
+</style><style id="date-horizontal-rectangle-repair">
+/* Prevent the date control from stretching vertically inside the header. */
+.head > div:last-child{align-self:flex-start!important;justify-content:flex-start!important;height:auto!important;min-height:0!important;max-height:none!important;}
+.head .date-control-v2{display:block!important;position:relative!important;flex:none!important;align-self:flex-end!important;width:154px!important;min-width:154px!important;max-width:154px!important;height:44px!important;min-height:44px!important;max-height:44px!important;aspect-ratio:auto!important;overflow:hidden!important;border-radius:16px!important;}
+.head .date-control-v2 .date-visible-v3{top:0!important;bottom:auto!important;height:44px!important;line-height:44px!important;}
+.head .date-control-v2 .date-arrow-v2{top:22px!important;}
+</style><style id="nutri-cloud-ui">
+#nutriAuthScreen{position:fixed;inset:0;z-index:1000;background:var(--bg,#f5f5f7);display:flex;align-items:center;justify-content:center;padding:24px;font-family:inherit;color:var(--ink,#24262b)}
+#nutriAuthScreen[hidden]{display:none!important}
+.nutri-auth-card{width:min(100%,380px);background:var(--card,#fff);border-radius:26px;padding:32px 25px;box-shadow:0 12px 40px #0000000a;text-align:center}
+.nutri-auth-card h2{margin:8px 0 10px;font-size:26px}.nutri-auth-card p{color:var(--sub,#888);line-height:1.65;font-size:13px}
+#nutriGoogleBtn{display:flex;align-items:center;justify-content:center;gap:12px;background:#fff;color:#222;border:1px solid #ddd;border-radius:14px;padding:13px 14px;font-weight:650;width:100%;margin-top:23px}
+#nutriGoogleBtn:disabled{opacity:.55}#nutriAuthMessage{font-size:12px;color:#a54747;min-height:18px;margin-top:14px;overflow-wrap:anywhere}
+#nutriAccountCard{padding:17px 20px}#nutriAccountEmail{font-size:12px;color:var(--sub);overflow-wrap:anywhere}#nutriSyncStatus{font-size:11px;color:var(--sub)}
+</style><style>#nutriAuthScreen{display:none!important}#nutriAccountCard{display:none!important}.preview-note{position:fixed;top:0;left:0;right:0;background:#292d34;color:white;text-align:center;padding:7px 12px;font-size:12px;z-index:9000}body{padding-top:28px}</style></head><body><div id="exact-logo-preview" style="position:relative;max-width:510px;margin:42px auto 0;padding:12px 19px;display:flex;gap:14px;align-items:center;font-family:system-ui,-apple-system,sans-serif"><img alt="实际安装的小猫图标" width="76" height="76" style="border-radius:17px;flex-shrink:0" src="data:image/png;base64,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"><div><strong style="font-size:16px">NutriTrack V2 · PWA 完整界面预览</strong><p style="margin:5px 0;color:#777;font-size:12px">左边就是实际打包的图标。下方可以浏览 App 界面；本预览不会同步云端。</p></div></div><div class="preview-note">NutriTrack V2 · 界面预览（本地演示，不连接云端）</div><main class="app"><header class="head"><div><div class="eyebrow">NUTRITRACK · DAILY WELLNESS</div><h1 id="pageTitle">Today</h1><div class="muted" id="subtitle">记录营养，看见变化</div></div><div style="display:flex;flex-direction:column;align-items:end;gap:7px"><div class="date-control-v2"><span class="date-visible-v3" id="dateVisibleV3" aria-hidden="true">2026/10/21</span><input aria-label="记录日期" class="date" id="day" type="date"/><button class="date-arrow-v2" id="dateArrowV2" type="button" aria-label="选择日期"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button></div><div class="actions"><button class="modebtn" id="langBtn" type="button">EN</button><button class="modebtn" id="themeBtn" type="button" aria-label="切换深浅色模式"></button></div></div></header>
+<section id="home"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title"><span data-i18n="dailyNutrition">今日营养</span><span class="muted" id="completion"></span></div><div class="rings"><svg viewbox="0 0 240 240"><g fill="none" stroke-linecap="round" stroke-width="13"><circle cx="120" cy="120" r="99" stroke="#e9eaed"></circle><circle cx="120" cy="120" id="calRing" r="99" stroke="#30343b" stroke-dasharray="0 999"></circle><circle cx="120" cy="120" r="76" stroke="#e9eaed"></circle><circle cx="120" cy="120" id="proteinRing" r="76" stroke="#777d87" stroke-dasharray="0 999"></circle><circle cx="120" cy="120" r="53" stroke="#e9eaed"></circle><circle cx="120" cy="120" id="fiberRing" r="53" stroke="#adb2ba" stroke-dasharray="0 999"></circle></g></svg><div class="center"><div class="big" id="calTotal">0</div><div class="mini">kcal eaten</div></div></div><div class="muted" id="calGoalLabel" style="text-align:center"></div><div class="metrics"><div class="metric"><div class="dot" style="background:#30343b"></div><span class="metric-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22c4 0 7-3 7-7 0-3-2-5-4-7 0 3-1.5 4-2 4 0-4-2-7-5-10 0 5-3 8-3 13 0 4 3 7 7 7Z"/><path d="M12 22c2 0 3.5-1.6 3.5-3.5 0-1.5-1-2.7-2.5-4.5 0 2-1 2.8-2 3.5-.5-1-1-1.5-2-2.5-.5 1.5-.5 2.5-.5 3.5 0 2 1.5 3.5 3.5 3.5Z"/></svg><span>Calories</span></span><b id="calPct"></b><span id="calNumbers"></span></div><div class="metric"><div class="dot" style="background:#777d87"></div><span class="metric-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9v6M6 7v10M18 7v10M21 9v6M6 12h12"/></svg><span>Protein</span></span><b id="proteinPct"></b><span id="proteinNumbers"></span></div><div class="metric"><div class="dot" style="background:#adb2ba"></div><span class="metric-label"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4C10 4 5 8 5 15c0 3 2 5 5 5 7 0 10-7 10-16Z"/><path d="M5 20c3-6 7-9 12-12"/></svg><span>Fiber</span></span><b id="fiberPct"></b><span id="fiberNumbers"></span></div></div></div><div class="kpis layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card compact"><span class="tiny" data-i18n="exercise">运动消耗</span><b id="exerciseTotal">0 kcal</b></div><div class="card compact"><span class="tiny" data-i18n="net">净摄入热量</span><b id="netTotal">0 kcal</b></div><div class="card compact"><span class="tiny" data-i18n="deficit">每日热量缺口</span><b id="deficit">—</b></div><div class="card compact"><span class="tiny" data-i18n="weight">最新体重</span><b id="latestWeight">—</b></div></div><div class="section-head layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><h2 data-i18n="foodDiary">饮食日记</h2><button class="pill" data-i18n="homeAddFood" onclick="go('diary')">＋ 添加食物</button></div><div class="card layout-movable" id="homeMeals"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div><div class="section-head layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><h2 data-i18n="bowel">排便记录</h2><button class="pill" data-i18n="homeAddBowel" onclick="go('body')">＋ 添加</button></div><div class="card compact layout-movable" id="bowelSummary"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div></section>
+<section class="hide" id="diary"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="addFood">添加食物</div><form id="foodForm"><label class="field"><span data-i18n="foodLibrary">常用食物库</span><select class="inline-select" id="foodPreset"><option value="">选择食物自动填充</option></select></label><label class="field"><span data-i18n="foodName">食物名称</span><input maxlength="80" name="name" required=""/></label><div class="twocol"><label class="field"><span data-i18n="meal">餐次</span><select id="mealSelect" name="meal"><option value="早餐">早餐</option><option value="午餐">午餐</option><option value="晚餐">晚餐</option></select></label><label class="field">Calories · kcal<input min="0" name="cal" required="" step="0.1" type="number"/></label><label class="field">Protein · g<input min="0" name="protein" required="" step="0.1" type="number"/></label><label class="field">Fiber · g<input min="0" name="fiber" required="" step="0.1" type="number"/></label></div><div class="food-form-actions"><button class="secondary hide" id="foodCancel" type="button">取消编辑</button><button class="primary" data-i18n="saveFood" id="foodSubmit">＋ 保存食物</button></div></form></div><div class="section-head layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><h2 data-i18n="foodRecords">当天饮食记录</h2></div><div class="card layout-movable" id="foodList"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="libraryManage">管理常用食物库</div><form id="presetForm"><label class="field">名称<input maxlength="80" name="name" required=""/></label><div class="twocol"><label class="field">Calories<input min="0" name="cal" required="" step="0.1" type="number"/></label><label class="field">Protein<input min="0" name="protein" required="" step="0.1" type="number"/></label><label class="field">Fiber<input min="0" name="fiber" required="" step="0.1" type="number"/></label></div><button class="primary" data-i18n="savePreset" id="presetSubmit">＋ 保存到食物库</button><button class="secondary hide" id="presetCancel" type="button">取消编辑</button></form><div id="presetList"></div></div></section>
+<section class="hide" id="body"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="bodyRecord">身体围度记录</div><form id="bodyForm"><div class="twocol"><label class="field">体重 kg<input min="0" name="weight" step="0.1" type="number"/></label><label class="field">腰围 cm<input min="0" name="waist" step="0.1" type="number"/></label><label class="field">臀围 cm<input min="0" name="hip" step="0.1" type="number"/></label><label class="field">大腿围 cm<input min="0" name="thigh" step="0.1" type="number"/></label><label class="field">臂围 cm<input min="0" name="arm" step="0.1" type="number"/></label><label class="field">小腿围 cm<input min="0" name="calf" step="0.1" type="number"/></label></div><div class="record-edit-actions"><button class="secondary hide" type="button" id="bodyCancel" onclick="cancelRecordEdit('body')">取消编辑</button><button class="primary" id="bodySave">＋ 保存一条身体记录</button></div></form></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">全部身体围度记录</div><div id="bodyList"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="bowel">排便记录</div><form id="bowelForm"><div class="twocol"><label class="field">时间<input name="time" required="" type="time"/></label><label class="field">Bristol 类型<select name="type"><option value="1">1 · 硬颗粒</option><option value="2">2 · 块状</option><option value="3">3 · 有裂纹</option><option selected="" value="4">4 · 光滑柔软</option><option value="5">5 · 软块</option><option value="6">6 · 糊状</option><option value="7">7 · 水样</option></select></label></div><label class="field">备注（选填）<input maxlength="120" name="note" placeholder="例如：顺畅"/></label><div class="record-edit-actions"><button class="secondary hide" type="button" id="bowelCancel" onclick="cancelRecordEdit('bowels')">取消编辑</button><button class="primary" id="bowelSave">＋ 保存排便记录</button></div></form><div id="bowelList"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="addExercise">添加运动</div><form id="exerciseForm"><label class="field">运动名称<input maxlength="80" name="name" placeholder="爬坡走路" required=""/></label><div class="twocol"><label class="field">时长（分钟，可选）<input min="0" name="minutes" placeholder="40" type="number"/></label><label class="field">消耗热量 kcal<input min="0" name="cal" required="" step="0.1" type="number"/></label></div><div class="record-edit-actions"><button class="secondary hide" type="button" id="exerciseCancel" onclick="cancelRecordEdit('exercises')">取消编辑</button><button class="primary" id="exerciseSave">＋ 保存运动</button></div></form></div><div class="card layout-movable" id="exerciseList"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div></div></section>
+<section class="hide" id="trends"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title"><span id="periodTitle">本周统计</span><span class="muted" id="weekLabel"></span></div><div class="report-switch" id="reportSwitch"><button class="on" type="button" data-report="week" onclick="setReportPeriod('week')">周报</button><button type="button" data-report="month" onclick="setReportPeriod('month')">月报</button><button type="button" data-report="year" onclick="setReportPeriod('year')">年报</button></div><div class="daygrid" id="weekTable"></div><div class="kpis" id="weekTotals" style="margin-top:14px"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">本周摄入热量 <span class="muted">Calories</span></div><div class="chart" id="trendChart"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">体重趋势</div><div id="weightTrend"></div></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">历史记录导出</div><button class="primary" id="copyHistory" type="button">复制全部历史记录文本</button><button class="secondary" id="downloadBackup" style="margin-top:9px" type="button">下载 JSON 备份</button></div></section>
+<section class="hide" id="profile"><div id="profileOverview"><div class="layout-toolbar" data-layout-toolbar="1"><span class="layout-hint"></span><button class="layout-toggle" data-layout-toggle="1" type="button">调整位置 ⇅</button></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">用户资料</div><form id="profileForm"><label class="field">昵称<input maxlength="50" name="nickname" placeholder="你的昵称"/></label><div class="twocol"><label class="field">身高 cm<input min="0" name="height" step="0.1" type="number"/></label><label class="field">目标体重 kg<input min="0" name="targetWeight" step="0.1" type="number"/></label></div><button class="primary">保存资料</button></form></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title" data-i18n="goals">每日营养目标</div><form id="goalForm"><div class="twocol"><label class="field">热量 kcal<input min="1" name="cal" required="" type="number"/></label><label class="field">蛋白质 g<input min="1" name="protein" required="" type="number"/></label><label class="field">膳食纤维 g<input min="1" name="fiber" required="" type="number"/></label><label class="field">TDEE kcal<input min="0" name="tdee" placeholder="选填" type="number"/></label></div><button class="primary">保存目标</button></form></div><div class="card layout-movable"><div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><div class="card-title">数据与隐私</div><p class="summary">已连接 Supabase：登录后自动同步记录到你的私人云端空间。建议定期下载 JSON 备份。</p><button class="secondary" id="exportBtn">下载 JSON 备份</button></div></div><div class="card" id="settingsEntryCard"><button class="settings-entry" id="openSettings" type="button"><span class="settings-entry-icon">⚙</span><span id="settingsEntryText">设置</span><span class="settings-chevron">›</span></button></div><div class="hide" id="settingsPanel"><button class="settings-back" id="backProfile" type="button">‹ <span id="backProfileText">我的</span></button><div class="card"><div class="card-title" id="settingsHeading">设置</div><div class="item"><span id="languageRowText">语言</span><button class="secondary" id="langSettings">切换语言</button></div><div class="item"><span id="modeRowText">浅色 / 深色模式</span><button class="secondary" id="themeSettings">切换模式</button></div><button class="settings-entry" id="openPalette" type="button"><span id="paletteRowText">主题配色</span><span class="settings-entry-right"><span class="palette-current-dot" id="currentPaletteDot"></span><span id="currentPaletteText"></span><span class="settings-chevron">›</span></span></button></div></div><div class="hide" id="palettePanel"><button class="settings-back" id="backSettings" type="button">‹ <span id="backSettingsText">设置</span></button><div class="card" id="paletteCard"><div class="card-title" id="paletteTitle">主题配色</div><p class="tiny" id="paletteHint">选择你喜欢的配色，立即应用到整个 App</p><div class="palette-grid" id="paletteGrid"></div></div></div></section></main>
+<nav class="nav"><button class="active" id="nav-home" onclick="go('home')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"></path></svg><span data-i18n="navHome">首页</span></button><button id="nav-diary" onclick="go('diary')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="M4 3v7a3 3 0 0 0 6 0V3M7 3v18M15 3v7h5V3a5 5 0 0 0-5 5v13"></path></svg><span data-i18n="navDiary">饮食</span></button><button id="nav-body" onclick="go('body')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"></path><path d="M3.4 12h4l2-3.5 3.2 7 2-3.5h6"></path></svg><span data-i18n="navBody">身体</span></button><button id="nav-trends" onclick="go('trends')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><path d="M3 3v18h18M8 16v-5M13 16V7M18 16V4"></path></svg><span data-i18n="navTrends">周报</span></button><button id="nav-profile" onclick="go('profile')"><svg aria-hidden="true" class="nav-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.85" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg><span data-i18n="navProfile">我的</span></button></nav><div class="toast hide" id="toast" role="status"></div><script>
+
+const KEY='nutritrack-v2-local-1';
+const today=()=>localDate(new Date());
+function localDate(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+const $=id=>document.getElementById(id),num=x=>Number(x)||0,fmt=x=>Number.isInteger(x)?String(x):Number(x).toFixed(1),uid=()=>globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random()}`;
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]));
+const presets=[['鸡胸肉 100g',165,31,0],['鸡蛋 1个',72,6.3,0],['燕麦 40g',156,6.8,4],['无糖希腊酸奶 100g',59,10,0],['香蕉 100g',89,1.1,2.6],['苹果 100g',52,.3,2.4],['西兰花 100g',34,2.8,2.6],['米饭 100g',130,2.7,.4],['豆腐 100g',76,8,0.3],['红薯 100g',86,1.6,3],['牛奶 250ml',125,8,0],['三文鱼 100g',208,20,0]].map(([name,cal,protein,fiber])=>({id:uid(),name,cal,protein,fiber}));
+let state;try{state=JSON.parse(localStorage.getItem(KEY))||{}}catch{state={}};
+state={foods:[],exercises:[],body:{},bowels:[],foodLibrary:presets,goals:{cal:1500,protein:100,fiber:25,tdee:0},profile:{nickname:'',height:'',targetWeight:''},lang:'zh',theme:'light',palette:'mono',...state};
+// Upgrade data from early prototype, which stored one body entry per day.
+if(!Array.isArray(state.body)){state.body=Object.entries(state.body||{}).filter(([,v])=>v&&typeof v==='object').flatMap(([date,v])=>[{...v,date,id:uid(),createdAt:date+'T12:00:00'}])}
+for(const key of ['foods','exercises','body','bowels','foodLibrary'])if(!Array.isArray(state[key]))state[key]=[];
+if(!state.foodLibrary.length&&!localStorage.getItem(KEY))state.foodLibrary=presets;
+let date=today(),active='home',editFood=null,editPreset=null,lastComplete='';
+// Declare edit state before the first applyPrefs()/render() call.
+let editExercise=null,editBody=null,editBowel=null;$('day').value=date;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){alert(localizedText('浏览器无法保存数据，请检查存储空间或隐私模式。'))}if(window.nutriCloudReady&&typeof window.nutriQueueSync==='function')window.nutriQueueSync();};
+const ofDay=arr=>arr.filter(x=>x.date===date),sum=(arr,k)=>ofDay(arr).reduce((a,x)=>a+num(x[k]),0);
+function toast(msg){const el=$('toast');el.textContent=localizedText(msg);el.classList.remove('hide');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.add('hide'),2400)}
+function ring(id,r,p){const c=2*Math.PI*r;$(id).setAttribute('stroke-dasharray',`${Math.max(0,Math.min(1,p))*c} ${c}`)}
+const translations={zh:{homeAddFood:'＋ 添加食物',homeAddBowel:'＋ 添加',saveFood:'＋ 保存食物',savePreset:'＋ 保存到食物库',dailyNutrition:'今日营养',exercise:'运动消耗',net:'净摄入热量',deficit:'每日热量缺口',weight:'最新体重',foodDiary:'饮食日记',bowel:'排便记录',addFood:'添加食物',foodLibrary:'常用食物库',foodName:'食物名称',meal:'餐次',foodRecords:'当天饮食记录',libraryManage:'管理常用食物库',addExercise:'添加运动',bodyRecord:'身体围度记录',goals:'每日营养目标',navHome:'首页',navDiary:'饮食',navBody:'身体',navTrends:'周报',navProfile:'我的'},en:{homeAddFood:'＋ Add Food',homeAddBowel:'＋ Add',saveFood:'＋ Save Food',savePreset:'＋ Save to Food Library',dailyNutrition:'Daily Nutrition',exercise:'Exercise Burn',net:'Net Calories',deficit:'Calorie Deficit',weight:'Latest Weight',foodDiary:'Food Diary',bowel:'Bowel Log',addFood:'Add Food',foodLibrary:'Food Library',foodName:'Food Name',meal:'Meal',foodRecords:'Daily Food Records',libraryManage:'Manage Food Library',addExercise:'Add Exercise',bodyRecord:'Body Measurements',goals:'Daily Goals',navHome:'Home',navDiary:'Diary',navBody:'Body',navTrends:'Weekly',navProfile:'Profile'}};
+function t(key){return translations[state.lang]?.[key]||key}
+const lexicon={
+'Today':'今天','Calories Eaten':'已摄入热量','Daily goal':'每日目标','Take good care of yourself, every day':'记录营养，看见变化','Exercise Burn':'运动消耗','Net Calories':'净摄入热量','Daily Calorie Deficit':'每日热量缺口','Latest Weight':'最新体重','Home':'首页','Diary':'饮食','Body':'身体','Weekly':'周报','Profile':'我的','Food Diary':'饮食日记','Body & Wellness':'身体与健康','Weekly Insights':'每周统计','Profile & Settings':'我的与设置',
+'NUTRITRACK · DAILY WELLNESS':'NUTRITRACK · 每日健康','DAILY WELLNESS':'每日健康','Daily Nutrition':'今日营养','kcal eaten':'已摄入热量','已摄入热量':'Calories Eaten','Track nutrition, see your progress':'记录营养，看见变化','记录营养，看见变化':'Track nutrition, see your progress','Calories':'热量','Protein':'蛋白质','Fiber':'膳食纤维','Add food':'添加食物','Add':'添加','Goals achieved':'目标已达成',
+'每一天，都好好照顾自己':'Track nutrition, see your progress','每日目标':'Daily goal','今日营养':'Daily Nutrition','运动消耗':'Exercise Burn','净摄入热量':'Net Calories','每日热量缺口':'Daily Calorie Deficit','最新体重':'Latest Weight','饮食日记':'Food Diary','排便记录':'Bowel Log','添加食物':'Add Food','常用食物库':'Food Library','食物名称':'Food Name','餐次':'Meal','当天饮食记录':'Daily Food Records','管理常用食物库':'Manage Food Library','添加运动':'Add Exercise','身体围度记录':'Body Measurements','每日营养目标':'Daily Nutrition Goals',
+'首页':'Home','饮食':'Diary','身体':'Body','周报':'Weekly','我的':'Profile','早餐':'Breakfast','午餐':'Lunch','晚餐':'Dinner',
+'保存修改':'Save Changes','选择食物自动填充':'Select a food to autofill','保存食物':'Save Food','取消编辑':'Cancel Editing','清空食物':'Clear Food','名称':'Name','保存到食物库':'Save to Food Library','运动名称':'Exercise Name','爬坡走路':'Incline Walking','时长（分钟，可选）':'Duration (minutes, optional)','消耗热量 kcal':'Calories Burned · kcal','保存运动':'Save Exercise','清空当天食物和运动':'Clear Today’s Food & Exercise',
+'体重 kg':'Weight · kg','腰围 cm':'Waist · cm','臀围 cm':'Hips · cm','大腿围 cm':'Thigh · cm','臂围 cm':'Arm · cm','小腿围 cm':'Calf · cm','保存一条身体记录':'Save Body Measurements','当日身体记录':'Today’s Body Records','时间':'Time','Bristol 类型':'Bristol Type','备注（选填）':'Notes (optional)','例如：顺畅':'e.g. Comfortable','保存排便记录':'Save Bowel Log',
+'硬颗粒':'Hard lumps','块状':'Lumpy','有裂纹':'Cracked','光滑柔软':'Smooth and soft','软块':'Soft blobs','糊状':'Mushy','水样':'Watery',
+'本周统计':'Weekly Summary','本周摄入热量':'Weekly Calories','体重趋势':'Weight Trend','历史记录导出':'Export History','复制全部历史记录文本':'Copy All History as Text','下载 JSON 备份':'Download JSON Backup',
+'用户资料':'User Profile','昵称':'Nickname','你的昵称':'Your nickname','身高 cm':'Height · cm','目标体重 kg':'Target Weight · kg','保存资料':'Save Profile','热量 kcal':'Calories · kcal','蛋白质 g':'Protein · g','膳食纤维 g':'Fiber · g','选填':'Optional','保存目标':'Save Goals',
+'显示设置':'Display Settings','中文 / English':'Chinese / English','切换语言':'Switch Language','浅色 / 深色模式':'Light / Dark Mode','切换模式':'Switch Theme','数据与隐私':'Data & Privacy',
+'本地原型：数据保存在当前浏览器 LocalStorage，尚未接入 Supabase 云端同步。清除浏览器数据可能导致记录丢失。':'Local prototype: Data is saved in this browser using LocalStorage. Supabase cloud sync is not connected yet. Clearing browser data may delete your records.',
+'今日排便次数':'Today’s Bowel Movements','项记录':'items','还没有食物记录':'No food records yet','还没有运动记录':'No exercise records yet','还没有身体记录':'No body records yet','还没有排便记录':'No bowel records yet','食物库为空':'Food library is empty','删除':'Delete','编辑':'Edit','保存修改':'Save Changes',
+'日期':'Date','摄入':'Intake','运动':'Exercise','蛋白':'Protein','纤维':'Fiber','本周总摄入':'Weekly Intake','本周总运动':'Weekly Exercise','有记录天数':'Days Recorded','平均热量':'Average Calories','平均蛋白':'Average Protein','平均纤维':'Average Fiber','天':'days','还没有体重记录':'No weight records yet',
+'体重':'Weight','腰围':'Waist','臀围':'Hips','大腿围':'Thigh','臂围':'Arm','小腿围':'Calf',
+'鸡胸肉 100g':'Chicken Breast 100g','鸡蛋 1个':'Egg · 1','燕麦 40g':'Oats 40g','无糖希腊酸奶 100g':'Plain Greek Yogurt 100g','香蕉 100g':'Banana 100g','苹果 100g':'Apple 100g','西兰花 100g':'Broccoli 100g','米饭 100g':'Cooked Rice 100g','豆腐 100g':'Tofu 100g','红薯 100g':'Sweet Potato 100g','牛奶 250ml':'Milk 250ml','三文鱼 100g':'Salmon 100g',
+'食物已保存':'Food saved','食物库已保存':'Food library saved','运动已保存':'Exercise saved','身体数据已保存':'Body measurements saved','排便记录已保存':'Bowel record saved','目标已保存':'Goals saved','资料已保存':'Profile saved','历史记录已复制':'History copied','请复制以下记录':'Copy the following records','确定删除这条记录吗？':'Delete this record?','清空当天全部食物记录？':'Clear all food records for this day?','清空当天食物和运动记录？身体与排便记录会保留。':'Clear food and exercise for this day? Body and bowel records will be kept.','请至少填写一项身体数据':'Enter at least one body measurement','浏览器无法保存数据，请检查存储空间或隐私模式。':'Unable to save in this browser. Check storage or private browsing settings.','今日营养目标全部达成！':'All daily nutrition goals achieved!',
+};
+const enMap=Object.fromEntries(Object.entries(lexicon).filter(([k,v])=>/[\u3400-\u9fff]/.test(k)&&!/[\u3400-\u9fff]/.test(v)));
+Object.assign(enMap,{'热量':'Calories','蛋白质':'Protein','膳食纤维':'Fiber','光滑柔软':'Smooth and soft','天':'days','添加':'Add','添加食物':'Add food','保存食物':'Save Food','保存到食物库':'Save to Food Library'});
+const zhMap=Object.fromEntries(Object.entries(enMap).map(([k,v])=>[v,k]));
+Object.assign(zhMap,{'Calories':'热量','Protein':'蛋白质','Fiber':'膳食纤维','Name':'名称','Daily Nutrition':'今日营养','Daily goal':'每日目标','kcal eaten':'已摄入热量','Calories Eaten':'已摄入热量','Add food':'添加食物','Add Food':'添加食物','Add':'添加','Smooth and soft':'光滑柔软','Take good care of yourself, every day':'每一天，都好好照顾自己'});
+const originalText=new WeakMap(),originalAttrs=new WeakMap();
+function localizedText(raw){
+  if(!raw)return raw;
+  const plus=raw.match(/^([＋+]\s*)/);
+  if(plus)return plus[1]+localizedText(raw.slice(plus[1].length));
+  const map=state.lang==='en'?enMap:zhMap;
+  if(map[raw])return map[raw];
+  if(state.lang==='zh' && lexicon[raw] && /[\u3400-\u9fff]/.test(lexicon[raw]))return lexicon[raw];
+  if(state.lang==='en'){
+    return raw.replace(/(\d+)\s*项记录/g,'$1 items').replace(/(\d+)\s*天(?=\s|$)/g,'$1 days').replace(/(\d+)\s*·\s*(硬颗粒|块状|有裂纹|光滑柔软|软块|糊状|水样)/g,(_,n,v)=>n+' · '+(enMap[v]||v)).replace(/(^|[ ·])(?:体重|腰围|臀围|大腿围|臂围|小腿围)(?=\s+[\d.])/g,m=>m.replace(/体重|腰围|臀围|大腿围|臂围|小腿围/g,x=>enMap[x]||x));
+  }
+  return raw.replace(/(\d+)\s*items/g,'$1 项记录').replace(/(\d+)\s*days(?=\s|$)/g,'$1 天').replace(/(\d+)\s*·\s*(Hard lumps|Lumpy|Cracked|Smooth and soft|Soft blobs|Mushy|Watery)/g,(_,n,v)=>n+' · '+(zhMap[v]||v));
+}
+function localizeDOM(){
+  const walker=document.createTreeWalker(document.querySelector('main'),NodeFilter.SHOW_TEXT);
+  let node;while((node=walker.nextNode())){
+    if(node.parentElement?.closest('script,style,[data-i18n],input,textarea,option'))continue;
+    const current=node.nodeValue, previous=originalText.get(node);
+    const source=previous!==undefined && (current===previous || current===translateNode(previous) || current===translateNodeFor(previous,state.lang==='zh'?'en':'zh'))?previous:current;
+    originalText.set(node,source);
+    node.nodeValue=translateNode(source);
+  }
+  document.querySelectorAll('input[placeholder],input[aria-label],select option').forEach(el=>{
+    for(const attr of ['placeholder','aria-label'])if(el.hasAttribute(attr)){
+      let attrs=originalAttrs.get(el);if(!attrs){attrs={};originalAttrs.set(el,attrs)}
+      if(!(attr in attrs))attrs[attr]=el.getAttribute(attr);
+      el.setAttribute(attr,localizedText(attrs[attr]));
+    }
+    if(el.tagName==='OPTION'){
+      const original=el.dataset.originalLabel??el.textContent;
+      if(!el.dataset.originalLabel)el.dataset.originalLabel=original;
+      el.textContent=localizedText(original);
+    }
+  });
+}
+function translateNodeFor(source,lang){const old=state.lang;state.lang=lang;const result=translateNode(source);state.lang=old;return result}
+function translateNode(source){
+  const lead=source.match(/^\s*/)[0],trail=source.match(/\s*$/)[0],value=source.trim();
+  return value?lead+localizedText(value)+trail:source;
+}
+
+const THEMES=[
+{id:'nutrition',zh:'营养三色',en:'Nutrition Colors',swatches:['#E65B5B','#E4B83F','#45A878']},
+{id:'mono',zh:'极简黑白',en:'Monochrome',swatches:['#292d34','#777d87','#adb2ba']},
+{id:'sage',zh:'鼠尾草绿',en:'Sage Green',swatches:['#658b78','#99b5a4','#c3d6c9']},
+{id:'cream',zh:'奶油杏色',en:'Cream Beige',swatches:['#b88768','#d3ab91','#e2cbb4']},
+{id:'lavender',zh:'薰衣草紫',en:'Lavender',swatches:['#8d79ba','#b0a0d0','#d0c3e4']},
+{id:'blue',zh:'雾霾蓝',en:'Dusty Blue',swatches:['#6886ac','#93aac4','#c0cfdf']},
+{id:'rose',zh:'柔雾粉',en:'Soft Rose',swatches:['#c17e95','#d9a7b7','#edcbd5']},
+{id:'mint',zh:'薄荷绿',en:'Mint',swatches:['#4e9b8c','#84bcb0','#b7dcd3']},
+{id:'terracotta',zh:'陶土橘',en:'Terracotta',swatches:['#b87556','#d6a088','#e8c4b3']}
+];
+function renderPalettePicker(){
+  const grid=$('paletteGrid');if(!grid)return;
+  const zh=state.lang==='zh';
+  $('paletteTitle').textContent=zh?'主题配色':'Color Themes';
+  $('paletteHint').textContent=zh?'选择你喜欢的配色，立即应用到整个 App':'Choose a palette to apply instantly across the app';
+  grid.innerHTML=THEMES.map(x=>`<button type="button" class="palette-option" aria-pressed="${state.palette===x.id}" onclick="choosePalette('${x.id}')"><span class="palette-preview"><span class="palette-swatches">${x.swatches.map(c=>`<i style="background:${c}"></i>`).join('')}</span>${state.palette===x.id?'<span class="palette-check" aria-hidden="true">✓</span>':''}</span><span class="palette-name">${zh?x.zh:x.en}</span></button>`).join('');
+}
+let profileView='overview';
+function showProfileView(view){profileView=view;const overview=view==='overview',settings=view==='settings',palette=view==='palette';$('profileOverview').classList.toggle('hide',!overview);$('settingsEntryCard').classList.toggle('hide',!overview);$('settingsPanel').classList.toggle('hide',!settings);$('palettePanel').classList.toggle('hide',!palette);updateSettingsLabels();window.scrollTo({top:0,behavior:'smooth'});}
+function updateSettingsLabels(){const zh=state.lang==='zh';const labels={settingsEntryText:['设置','Settings'],backProfileText:['我的','Profile'],backSettingsText:['设置','Settings'],settingsHeading:['设置','Settings'],languageRowText:['语言','Language'],modeRowText:['浅色 / 深色模式','Light / Dark Mode'],paletteRowText:['主题配色','Color Themes']};for(const [id,values] of Object.entries(labels))$(id).textContent=values[zh?0:1];const chosen=THEMES.find(x=>x.id===state.palette)||THEMES[0];$('currentPaletteText').textContent=zh?chosen.zh:chosen.en;$('currentPaletteDot').style.background=chosen.swatches[0];$('pageTitle').textContent=profileView==='overview'?(zh?'我的':'Profile'):profileView==='settings'?(zh?'设置':'Settings'):(zh?'主题配色':'Color Themes');}
+$('openSettings').onclick=()=>showProfileView('settings');$('openPalette').onclick=()=>showProfileView('palette');$('backSettings').onclick=()=>showProfileView('settings');$('backProfile').onclick=()=>showProfileView('overview');
+function choosePalette(id){if(!THEMES.some(x=>x.id===id))return;state.palette=id;save();applyPrefs();updateSettingsLabels();}
+
+function applyPrefs(){
+  document.body.classList.toggle('dark',state.theme==='dark');
+  document.body.dataset.palette=THEMES.some(x=>x.id===state.palette)?state.palette:'mono';
+  renderPalettePicker();updateSettingsLabels();
+  $('langBtn').textContent=state.lang==='zh'?'EN':'中';
+  $('themeBtn').innerHTML=state.theme==='dark'?'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>':'<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.7 13A8.5 8.5 0 0 1 11 3.3 8.5 8.5 0 1 0 20.7 13Z"/></svg>'; $('themeBtn').setAttribute('aria-label',state.lang==='zh'?'切换深浅色模式':'Toggle dark mode');
+  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+  document.documentElement.lang=state.lang==='zh'?'zh-CN':'en';
+  $('pageTitle').textContent=({home:state.lang==='zh'?'今天':'Today',diary:state.lang==='zh'?'饮食日记':'Food Diary',body:state.lang==='zh'?'身体与健康':'Body & Wellness',trends:state.lang==='zh'?'每周统计':'Weekly Insights',profile:state.lang==='zh'?'我的与设置':'Profile & Settings'})[active];
+  $('subtitle').textContent=state.lang==='zh'?'记录营养，看见变化':'Track nutrition, see your progress';
+  if(editFood)$('foodSubmit').textContent=localizedText('保存修改');
+  if(editPreset)$('presetSubmit').textContent=localizedText('保存修改');
+  localizeDOM();
+  for(const [type,id] of [['exercises','exerciseSave'],['body','bodySave'],['bowels','bowelSave']]){const activeEdit=type==='exercises'?editExercise:type==='body'?editBody:editBowel;if(activeEdit)$(id).textContent=state.lang==='zh'?'保存修改':'Save Changes';}
+  for(const id of ['exerciseCancel','bodyCancel','bowelCancel'])$(id).textContent=state.lang==='zh'?'取消编辑':'Cancel';
+  if(active==='profile')renderPalettePicker();
+}
+function go(tab){active=tab;if(tab==='profile')showProfileView('overview');for(const id of ['home','diary','body','trends','profile']){$(id).classList.toggle('hide',id!==tab);$('nav-'+id).classList.toggle('active',id===tab)}applyPrefs();render();window.scrollTo({top:0,behavior:'smooth'})}
+function weekDays(){const d=new Date(date+'T12:00:00');d.setDate(d.getDate()-((d.getDay()+6)%7));return Array.from({length:7},(_,i)=>{const x=new Date(d);x.setDate(d.getDate()+i);return localDate(x)})}
+function render(){const g=state.goals,cal=sum(state.foods,'cal'),protein=sum(state.foods,'protein'),fiber=sum(state.foods,'fiber'),exercise=sum(state.exercises,'cal'),net=cal-exercise;
+$('calTotal').textContent=fmt(cal);$('calGoalLabel').textContent=`${state.lang==='zh'?'每日目标':'Daily goal'} ${g.cal} kcal · ${Math.round(cal/g.cal*100)}%`;
+for(const [id,value,goal,r] of [['cal',cal,g.cal,99],['protein',protein,g.protein,76],['fiber',fiber,g.fiber,53]]){ring(id+'Ring',r,value/goal);$(id+'Pct').textContent=Math.round(value/goal*100)+'%';$(id+'Numbers').textContent=`${fmt(value)} / ${goal} ${id==='cal'?'kcal':'g'}`}
+$('exerciseTotal').textContent=fmt(exercise)+' kcal';$('netTotal').textContent=fmt(net)+' kcal';$('deficit').textContent=g.tdee?fmt(g.tdee-net)+' kcal':'—';
+const weights=state.body.filter(x=>num(x.weight)>0).sort((a,b)=>(b.date+b.createdAt).localeCompare(a.date+a.createdAt));$('latestWeight').textContent=weights.length?fmt(num(weights[0].weight))+' kg':'—';
+$('homeMeals').innerHTML=['早餐','午餐','晚餐'].map(m=>{const a=ofDay(state.foods).filter(x=>x.meal===m);return `<div class="item home-meal-row"><div class="home-meal-info"><b>${state.lang==='en'?({'早餐':'Breakfast','午餐':'Lunch','晚餐':'Dinner'}[m]):m}</b><p>${a.length} ${state.lang==='zh'?'项记录':'items'}</p></div><div class="right"><b>${fmt(a.reduce((s,x)=>s+num(x.cal),0))} kcal</b></div></div>`}).join('');
+$('bowelSummary').innerHTML=`<div class="row"><span>${state.lang==='zh'?'今日排便次数':'Today’s bowel movements'}</span><b>${ofDay(state.bowels).length}</b></div>`;
+$('foodList').innerHTML=ofDay(state.foods).length?['早餐','午餐','晚餐'].map(m=>{const a=ofDay(state.foods).filter(x=>x.meal===m);return a.length?`<div class="tiny" style="margin-top:12px">${m}</div>`+a.map(x=>`<div class="item"><div><b>${esc(x.name)}</b><p>${fmt(num(x.protein))}g protein · ${fmt(num(x.fiber))}g fiber · ${esc(x.createdAt?new Date(x.createdAt).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'')}</p></div><div class="right food-record-actions"><b class="food-calories">${fmt(num(x.cal))} kcal</b><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editFoodEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('foods','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div></div>`).join(''):''}).join(''):'<div class="empty">还没有食物记录</div>';
+$('exerciseList').innerHTML=ofDay(state.exercises).length?ofDay(state.exercises).map(x=>`<div class="item"><div><b>${esc(x.name)}</b><p>${num(x.minutes)?fmt(num(x.minutes))+' min':''}</p></div><div class="right exercise-record-actions"><b class="exercise-calories">${fmt(num(x.cal))} kcal</b><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editExerciseEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('exercises','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div></div>`).join(''):'<div class="empty">还没有运动记录</div>';
+$('bodyList').innerHTML=state.body.length?[...state.body].sort((a,b)=>(String(b.date||'')+' '+String(b.createdAt||'')).localeCompare(String(a.date||'')+' '+String(a.createdAt||''))).map(x=>{const zh=state.lang==='zh';const measures=[['weight',zh?'体重':'Weight','kg'],['waist',zh?'腰围':'Waist','cm'],['hip',zh?'臀围':'Hips','cm'],['thigh',zh?'大腿围':'Thigh','cm'],['arm',zh?'臂围':'Arm','cm'],['calf',zh?'小腿围':'Calf','cm']].filter(([k])=>x[k]!==undefined&&x[k]!==null&&x[k]!=='');const time=x.createdAt?new Date(x.createdAt).toLocaleTimeString(zh?'zh-CN':'en-GB',{hour:'2-digit',minute:'2-digit'}):'';return `<div class="item measurement-history-item"><div class="measurement-details"><b>${esc(x.date||'')} <span class="measurement-time">${esc(time)}</span></b><p>${measures.map(([k,label,unit])=>`${label} ${fmt(num(x[k]))} ${unit}`).join(' · ')}</p></div><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editBodyEntry('${x.id}')">${zh?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('body','${x.id}')">${zh?'删除':'Delete'}</button></div></details></div>`}).join(''):`<div class="empty">${state.lang==='zh'?'还没有身体围度记录':'No body measurement records yet'}</div>`;
+$('bowelList').innerHTML=ofDay(state.bowels).length?ofDay(state.bowels).map(x=>`<div class="item"><div><b>${esc(x.time)} · Bristol ${esc(x.type)}</b><p>${esc(x.note||'')}</p></div><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editBowelEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('bowels','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div>`).join(''):'<div class="empty">还没有排便记录</div>';
+$('foodPreset').innerHTML='<option value="">选择食物自动填充</option>'+state.foodLibrary.map(x=>`<option value="${esc(x.id)}">${esc(x.name)}</option>`).join('');
+$('presetList').innerHTML=state.foodLibrary.map(x=>`<div class="item"><div><b>${esc(x.name)}</b><p>${fmt(num(x.cal))} kcal · P ${fmt(num(x.protein))}g · F ${fmt(num(x.fiber))}g</p></div><details class="item-menu"><summary aria-label="More options"><svg class="vertical-more" viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg></summary><div class="item-menu-popup"><button onclick="editPresetEntry('${x.id}')">${state.lang==='zh'?'编辑':'Edit'}</button><button class="delete-action" onclick="remove('foodLibrary','${x.id}')">${state.lang==='zh'?'删除':'Delete'}</button></div></details></div>`).join('')||'<div class="empty">食物库为空</div>';
+$('weightTrend').innerHTML=weights.length?weights.slice(0,12).map(x=>`<div class="item"><span class="smalltext">${x.date}</span><b>${fmt(num(x.weight))} kg</b></div>`).join(''):'<div class="empty">还没有体重记录</div>';
+for(const [k,v] of Object.entries(g))$('goalForm').elements[k].value=v||'';for(const [k,v] of Object.entries(state.profile))$('profileForm').elements[k].value=v||'';
+const completed=cal>0&&cal<=g.cal&&protein>=g.protein&&fiber>=g.fiber;$('completion').textContent=completed?(state.lang==='zh'?'✓ 目标已达成':'✓ Goals achieved'):'';const marker=date+':'+[cal,protein,fiber].join(':');if(completed&&lastComplete!==marker){lastComplete=marker;toast('🎉 '+localizedText('今日营养目标全部达成！'))}
+if(active==='trends')renderPeriodReport();
+applyPrefs();
+}
+
+let reportPeriod='week';
+function toggleMeasurements(){
+ const panel=document.getElementById('measurementsPanel');
+ panel.classList.toggle('hide');
+ const svg=document.querySelector('#measurementsEntry svg');
+ if(svg)svg.style.transform=panel.classList.contains('hide')?'':'rotate(90deg)';
+}
+function setReportPeriod(period){
+ reportPeriod=period;
+ document.querySelectorAll('[data-report]').forEach(b=>b.classList.toggle('on',b.dataset.report===period));
+ render();
+}
+function renderPeriodReport(){
+ const en=state.lang==='en',d=new Date(date+'T12:00:00');
+ const first=new Date(d),last=new Date(d);
+ let units=[],heading='',periodName='';
+ if(reportPeriod==='month'){
+   first.setDate(1);last.setMonth(d.getMonth()+1,0);
+   const count=last.getDate();
+   units=Array.from({length:count},(_,i)=>{const x=new Date(first);x.setDate(i+1);const key=localDate(x);return {key,label:String(i+1)}});
+   heading=en?'Monthly Summary':'本月统计';periodName=date.slice(0,7);
+ }else if(reportPeriod==='year'){
+   first.setMonth(0,1);last.setMonth(11,31);
+   units=Array.from({length:12},(_,i)=>({key:date.slice(0,4)+'-'+String(i+1).padStart(2,'0'),label:en?String(i+1):String(i+1)+'月'}));
+   heading=en?'Yearly Summary':'本年统计';periodName=date.slice(0,4);
+ }else{
+   const days=weekDays();
+   units=days.map(key=>({key,label:key.slice(5)}));
+   heading=en?'Weekly Summary':'本周统计';periodName=days[0]+' — '+days[6];
+ }
+ const byUnit=units.map(u=>{
+   const match=x=>reportPeriod==='year'?x.date.startsWith(u.key):x.date===u.key;
+   const foods=state.foods.filter(match),exercise=state.exercises.filter(match);
+   return {...u,cal:foods.reduce((a,x)=>a+num(x.cal),0),exercise:exercise.reduce((a,x)=>a+num(x.cal),0),protein:foods.reduce((a,x)=>a+num(x.protein),0),fiber:foods.reduce((a,x)=>a+num(x.fiber),0),recorded:foods.length>0||exercise.length>0};
+ });
+ const cols=en?['Date','Intake','Burn','Protein','Fiber']:['日期','摄入','运动','蛋白','纤维'];
+ $('periodTitle').textContent=heading;$('weekLabel').textContent=periodName;
+ // Monthly report uses week-sized groupings so the table stays readable on mobile.
+ let display=byUnit;
+ if(reportPeriod==='month'){
+   display=[];
+   for(let i=0;i<byUnit.length;i+=7){
+     const batch=byUnit.slice(i,i+7);
+     display.push({label:batch[0].label+'–'+batch[batch.length-1].label,recorded:batch.some(x=>x.recorded),
+       ...Object.fromEntries(['cal','exercise','protein','fiber'].map(k=>[k,batch.reduce((sum,x)=>sum+x[k],0)]))});
+   }
+ }
+ $('weekTable').innerHTML='<table><thead><tr>'+cols.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>'+display.map(x=>'<tr><td>'+x.label+'</td>'+['cal','exercise','protein','fiber'].map(k=>'<td>'+(x.recorded?fmt(x[k]):'—')+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+ const total=k=>byUnit.reduce((a,x)=>a+x[k],0);
+ const recordDays=reportPeriod==='year'?new Set([...state.foods,...state.exercises].filter(x=>x.date.startsWith(date.slice(0,4))).map(x=>x.date)).size:reportPeriod==='month'?byUnit.filter(x=>x.recorded).length:byUnit.filter(x=>x.recorded).length;
+ const prefix=en?{week:'Weekly',month:'Monthly',year:'Yearly'}[reportPeriod]:{week:'本周',month:'本月',year:'本年'}[reportPeriod];
+ $('weekTotals').innerHTML=[[prefix+(en?' Intake':'总摄入'),fmt(total('cal'))+' kcal'],[prefix+(en?' Exercise':'总运动'),fmt(total('exercise'))+' kcal'],[en?'Days Recorded':'有记录天数',recordDays+(en?' days':' 天')],[en?'Average Calories':'平均热量',recordDays?fmt(total('cal')/recordDays)+' kcal':'—'],[en?'Average Protein':'平均蛋白',recordDays?fmt(total('protein')/recordDays)+' g':'—'],[en?'Average Fiber':'平均纤维',recordDays?fmt(total('fiber')/recordDays)+' g':'—']].map(([n,v])=>'<div class="card compact"><span class="tiny">'+n+'</span><b>'+v+'</b></div>').join('');
+ const chartUnits=reportPeriod==='month'?display:byUnit;
+ const max=Math.max(1,...chartUnits.map(x=>x.cal));
+ $('trendChart').innerHTML=chartUnits.map(x=>'<div class="barwrap"><span class="bar-value">'+(x.recorded?fmt(x.cal):'—')+'</span><div class="bar" style="height:'+(x.recorded?Math.max(4,x.cal/max*90):2)+'%"></div><small>'+x.label+'</small></div>').join('');
+ const chartTitle=document.querySelector('#trendChart')?.closest('.card')?.querySelector('.card-title');
+ if(chartTitle)chartTitle.innerHTML=(en?{week:'Weekly',month:'Monthly',year:'Yearly'}[reportPeriod]+' Calories':{week:'本周',month:'本月',year:'本年'}[reportPeriod]+'摄入热量');
+ document.querySelectorAll('[data-report]').forEach(b=>b.textContent=en?({week:'Week',month:'Month',year:'Year'}[b.dataset.report]):({week:'周报',month:'月报',year:'年报'}[b.dataset.report]));
+ const entry=document.getElementById('measurementsEntryText');
+ if(entry)entry.textContent=en?'Body Measurements':'身体围度记录';
+ const allLabel=document.getElementById('allMeasurementsLabel');if(allLabel)allLabel.textContent=en?'All Body Measurement Records':'全部身体围度记录';
+ const bodyHistoryHeading=document.getElementById('bodyList')?.previousElementSibling;
+ if(bodyHistoryHeading&&bodyHistoryHeading.classList.contains('card-title'))bodyHistoryHeading.textContent=en?'All Measurement Records':'全部身体围度记录';
+}
+
+function remove(type,id){if(!confirm(localizedText('确定删除这条记录吗？')))return;state[type]=state[type].filter(x=>x.id!==id);save();render()}
+function editFoodEntry(id){const x=state.foods.find(x=>x.id===id);if(!x)return;editFood=id;date=x.date;$('day').value=date;const f=$('foodForm');for(const k of ['name','meal','cal','protein','fiber'])f.elements[k].value=x[k];$('foodSubmit').textContent=localizedText('保存修改');$('foodCancel').classList.remove('hide');go('diary');f.scrollIntoView({behavior:'smooth'})}
+function editPresetEntry(id){const x=state.foodLibrary.find(x=>x.id===id);if(!x)return;editPreset=id;const f=$('presetForm');for(const k of ['name','cal','protein','fiber'])f.elements[k].value=x[k];$('presetSubmit').textContent=localizedText('保存修改');$('presetCancel').classList.remove('hide');f.scrollIntoView({behavior:'smooth'})}
+function cancelFood(){editFood=null;$('foodForm').reset();$('foodSubmit').textContent=localizedText('＋ 保存食物');$('foodCancel').classList.add('hide')}
+function cancelPreset(){editPreset=null;$('presetForm').reset();$('presetSubmit').textContent=localizedText('＋ 保存到食物库');$('presetCancel').classList.add('hide')}
+$('foodCancel').onclick=cancelFood;$('presetCancel').onclick=cancelPreset;
+$('foodPreset').onchange=e=>{const x=state.foodLibrary.find(x=>x.id===e.target.value);if(!x)return;for(const k of ['name','cal','protein','fiber'])$('foodForm').elements[k].value=x[k]};
+$('day').onchange=e=>{date=e.target.value||today();cancelFood();render()};
+$('foodForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),x={name:String(f.get('name')).trim(),meal:f.get('meal'),cal:num(f.get('cal')),protein:num(f.get('protein')),fiber:num(f.get('fiber'))};if(!x.name)return;if(editFood){const item=state.foods.find(y=>y.id===editFood);if(item)Object.assign(item,x)}else state.foods.push({id:uid(),date,createdAt:new Date().toISOString(),...x});save();cancelFood();render();toast('食物已保存')};
+$('presetForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),x={name:String(f.get('name')).trim(),cal:num(f.get('cal')),protein:num(f.get('protein')),fiber:num(f.get('fiber'))};if(!x.name)return;if(editPreset){const item=state.foodLibrary.find(y=>y.id===editPreset);if(item)Object.assign(item,x)}else state.foodLibrary.push({id:uid(),...x});save();cancelPreset();render();toast('食物库已保存')};
+$('exerciseForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const values={name:String(f.get('name')).trim(),minutes:num(f.get('minutes')),cal:num(f.get('cal'))};if(editExercise){const item=state.exercises.find(x=>x.id===editExercise);if(item)Object.assign(item,values)}else state.exercises.push({id:uid(),date,createdAt:new Date().toISOString(),...values});save();cancelRecordEdit('exercises');render();toast('运动已保存')};
+$('bodyForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target),x={};for(const k of ['weight','waist','hip','thigh','arm','calf'])if(f.get(k)!=='')x[k]=num(f.get(k));if(!Object.keys(x).length)return alert(localizedText('请至少填写一项身体数据'));if(editBody){const item=state.body.find(y=>y.id===editBody);if(item){for(const k of ['weight','waist','hip','thigh','arm','calf'])delete item[k];Object.assign(item,x)}}else state.body.push({id:uid(),date,createdAt:new Date().toISOString(),...x});save();cancelRecordEdit('body');render();toast('身体数据已保存')};
+$('bowelForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);const values={time:String(f.get('time')),type:String(f.get('type')),note:String(f.get('note')).trim()};if(editBowel){const item=state.bowels.find(x=>x.id===editBowel);if(item)Object.assign(item,values)}else state.bowels.push({id:uid(),date,createdAt:new Date().toISOString(),...values});save();cancelRecordEdit('bowels');setDefaultTime();render();toast('排便记录已保存')};
+function setDefaultTime(){const d=new Date();$('bowelForm').elements.time.value=`${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`};setDefaultTime();
+$('goalForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);state.goals={cal:num(f.get('cal')),protein:num(f.get('protein')),fiber:num(f.get('fiber')),tdee:num(f.get('tdee'))};save();render();toast('目标已保存')};
+$('profileForm').onsubmit=e=>{e.preventDefault();const f=new FormData(e.target);state.profile={nickname:String(f.get('nickname')).trim(),height:f.get('height'),targetWeight:f.get('targetWeight')};save();toast('资料已保存')};
+
+
+function historyText(){const dates=[...new Set([...state.foods,...state.exercises,...state.body,...state.bowels].map(x=>x.date))].sort();let lines=['NutriTrack V2 历史记录','每日目标：'+JSON.stringify(state.goals),'用户资料：'+JSON.stringify(state.profile),''];for(const d of dates){lines.push('【'+d+'】');const fs=state.foods.filter(x=>x.date===d),es=state.exercises.filter(x=>x.date===d);for(const x of fs)lines.push(`饮食 ${x.meal} · ${x.name} · ${x.cal}kcal · 蛋白${x.protein}g · 纤维${x.fiber}g`);for(const x of es)lines.push(`运动 ${x.name} · ${x.cal}kcal · ${x.minutes||0}分钟`);for(const x of state.body.filter(x=>x.date===d))lines.push('身体 '+JSON.stringify(x));for(const x of state.bowels.filter(x=>x.date===d))lines.push(`排便 ${x.time} · Bristol ${x.type} · ${x.note}`);lines.push('')}return lines.join('\n')}
+$('copyHistory').onclick=async()=>{const txt=historyText();try{await navigator.clipboard.writeText(txt);toast('历史记录已复制')}catch{const area=document.createElement('textarea');area.value=txt;document.body.appendChild(area);area.select();const ok=document.execCommand('copy');area.remove();if(ok)toast('历史记录已复制');else prompt(localizedText('请复制以下记录'),txt)}};
+function backup(){const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='NutriTrack-V2-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}$('exportBtn').onclick=backup;$('downloadBackup').onclick=backup;
+function changeLang(){state.lang=state.lang==='zh'?'en':'zh';save();render()}function changeTheme(){state.theme=state.theme==='dark'?'light':'dark';save();applyPrefs()};$('langBtn').onclick=changeLang;$('langSettings').onclick=changeLang;$('themeBtn').onclick=changeTheme;$('themeSettings').onclick=changeTheme;
+applyPrefs();render();
+</script><script>
+(function(){
+const ORDER_KEY='nutritrack-v2-widget-order-grouped';
+const sections=['home','diary','body','trends'];
+let order={};try{order=JSON.parse(localStorage.getItem(ORDER_KEY)||'{}')||{}}catch(e){}
+const zh=()=>document.documentElement.lang!=='en';
+function keyFor(el){return el.id||('widget-'+Array.from(el.parentElement.children).filter(x=>x.classList.contains('layout-movable')).indexOf(el));}
+function groupTitleWithCard(section, cardId, groupKey){
+ const card=document.getElementById(cardId);
+ const heading=card&&card.previousElementSibling;
+ if(!card||!heading||!heading.classList.contains('section-head'))return;
+ const group=document.createElement('div');
+ group.className='layout-movable widget-group';
+ group.dataset.widgetKey=groupKey;
+ heading.parentNode.insertBefore(group,heading);
+ // One move control for the whole section: title + action + content.
+ const controls=heading.querySelector('.layout-controls');
+ if(controls)group.appendChild(controls);
+ [heading,card].forEach(el=>{
+   el.classList.remove('layout-movable');
+   const extra=el.querySelector(':scope > .layout-controls');if(extra)extra.remove();
+   group.appendChild(el);
+ });
+}
+function groupNutritionWithSummary(){
+ const section=document.getElementById('home');
+ if(!section)return;
+ const nutrition=section.querySelector(':scope > .card.layout-movable');
+ const summary=section.querySelector(':scope > .kpis.layout-movable');
+ if(!nutrition||!summary)return;
+ const group=document.createElement('div');
+ group.className='layout-movable widget-group nutrition-summary-group';
+ group.dataset.widgetKey='home-nutrition-summary';
+ nutrition.parentNode.insertBefore(group,nutrition);
+ const controls=nutrition.querySelector(':scope > .layout-controls');
+ if(controls)group.appendChild(controls);
+ [nutrition,summary].forEach(el=>{
+  el.classList.remove('layout-movable');
+  const extra=el.querySelector(':scope > .layout-controls');
+  if(extra)extra.remove();
+  group.appendChild(el);
+ });
+}
+function groupBodyPair(section, firstTitle, secondTitle, key){
+ const cards=Array.from(section.children).filter(el=>el.classList.contains('card')&&el.classList.contains('layout-movable'));
+ const first=cards.find(el=>el.querySelector('.card-title')?.textContent.trim().includes(firstTitle));
+ const second=cards.find(el=>el.querySelector('.card-title')?.textContent.trim().includes(secondTitle));
+ if(!first||!second)return;
+ const group=document.createElement('div');group.className='layout-movable widget-group body-combined-group';group.dataset.widgetKey=key;
+ first.parentNode.insertBefore(group,first);
+ const controls=first.querySelector(':scope > .layout-controls');if(controls)group.appendChild(controls);
+ [first,second].forEach(el=>{el.classList.remove('layout-movable');el.querySelector(':scope > .layout-controls')?.remove();group.appendChild(el)});
+}
+function groupExercisePair(section){
+ const first=Array.from(section.children).find(el=>el.classList.contains('layout-movable')&&el.querySelector('.card-title')?.getAttribute('data-i18n')==='addExercise');
+ const second=document.getElementById('exerciseList');if(!first||!second)return;
+ const group=document.createElement('div');group.className='layout-movable widget-group body-combined-group';group.dataset.widgetKey='body-exercise-combined';
+ first.parentNode.insertBefore(group,first);
+ const controls=first.querySelector(':scope > .layout-controls');if(controls)group.appendChild(controls);
+ [first,second].forEach(el=>{el.classList.remove('layout-movable');el.querySelector(':scope > .layout-controls')?.remove();group.appendChild(el)});
+}
+function collapseFoodLibrary(){
+ const section=document.getElementById('diary');
+ const card=Array.from(section.children).find(el=>el.classList.contains('card')&&el.querySelector('.card-title')?.getAttribute('data-i18n')==='libraryManage');
+ if(!card||card.querySelector('.food-library-details'))return;
+ const list=document.getElementById('presetList');if(!list)return;
+ const details=document.createElement('details');details.className='food-library-details';
+ const summary=document.createElement('summary');summary.className='food-library-button';
+ summary.innerHTML='<span id="viewFoodLibraryText">查看食物库</span><span class="library-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>';
+ details.appendChild(summary);list.parentNode.insertBefore(details,list);details.appendChild(list);
+ // Add and edit food form remains visible at all times.
+}
+function collapseExportHistory(){
+ const card=document.getElementById('copyHistory')?.closest('.card');if(!card||card.querySelector('.export-details'))return;
+ const details=document.createElement('details');details.className='export-details';
+ const summary=document.createElement('summary');summary.className='food-library-button';
+ summary.innerHTML='<span id="viewExportText">记录导出</span><span class="library-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>';
+ details.appendChild(summary);
+ const title=card.querySelector(':scope > .card-title');if(title)title.remove();
+ for(const id of ['copyHistory','downloadBackup']){const el=document.getElementById(id);if(el)details.appendChild(el)}
+ card.appendChild(details);
+}
+function compactProfile(){
+ const profile=document.getElementById('profileOverview');if(!profile)return;
+ profile.classList.add('profile-no-reorder');
+ profile.querySelector('[data-layout-toolbar]')?.remove();
+ profile.querySelectorAll('.layout-controls').forEach(el=>el.remove());
+ profile.querySelectorAll('.layout-movable').forEach(el=>el.classList.remove('layout-movable'));
+}
+function updateCompactLabels(){
+ const isZh=document.documentElement.lang!=='en';
+ const library=document.getElementById('viewFoodLibraryText');if(library)library.textContent=isZh?'查看食物库':'View Food Library';
+ const exp=document.getElementById('viewExportText');if(exp)exp.textContent=isZh?'记录导出':'Export Records';
+}
+function moveToolbarsToBottom(){
+ document.querySelectorAll('[data-layout-toolbar]').forEach(toolbar=>{
+  const section=toolbar.parentElement;if(section) section.appendChild(toolbar);
+ });
+}
+function init(){
+ groupNutritionWithSummary();
+ groupBodyPair(document.getElementById('body'),'身体围度记录','全部身体围度记录','body-measurements-combined');
+ const measurementGroup=document.querySelector('#body > [data-widget-key="body-measurements-combined"]');
+ if(measurementGroup){
+   const trends=document.getElementById('trends');
+   const wrapper=document.createElement('div');
+   wrapper.className='card layout-movable measurement-portal';
+   wrapper.dataset.widgetKey='trends-measurements';
+   wrapper.innerHTML='<div class="layout-controls"><button aria-label="up" data-move="up" type="button">↑</button><button aria-label="down" data-move="down" type="button">↓</button></div><button class="subpage-entry" type="button" id="measurementsEntry" onclick="toggleMeasurements()"> <span id="measurementsEntryText">身体围度记录</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 18 6-6-6-6"/></svg></button><div id="measurementsPanel" class="hide"></div>';
+   trends.appendChild(wrapper);
+   measurementGroup.classList.remove('layout-movable');
+   measurementGroup.querySelectorAll('.layout-controls').forEach(x=>x.remove());
+   measurementGroup.classList.remove('card');
+   wrapper.querySelector('#measurementsPanel').appendChild(measurementGroup);
+   measurementGroup.querySelectorAll(':scope > .card').forEach(c=>{c.classList.add('measurement-inner-card');});
+   const historyList=document.getElementById('bodyList');
+   if(historyList){
+     const historyCard=historyList.closest('.measurement-inner-card');
+     const disclosure=document.createElement('details');
+     disclosure.className='measurement-history-disclosure';
+     const heading=document.createElement('summary');
+     heading.innerHTML='<span id="allMeasurementsLabel">全部身体围度记录</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+     disclosure.appendChild(heading);
+     historyList.parentNode.insertBefore(disclosure,historyList);
+     disclosure.appendChild(historyList);
+     if(historyCard)historyCard.style.marginTop='0';
+   }
+ }
+
+ groupExercisePair(document.getElementById('body'));
+ collapseFoodLibrary();
+ collapseExportHistory();
+ compactProfile();
+ groupTitleWithCard(document.getElementById('home'),'homeMeals','home-meals-group');
+ groupTitleWithCard(document.getElementById('home'),'bowelSummary','home-bowel-group');
+ groupTitleWithCard(document.getElementById('diary'),'foodList','diary-food-group');
+ for(const sid of sections){const section=document.getElementById(sid);if(!section)continue;
+  const items=Array.from(section.children).filter(x=>x.classList.contains('layout-movable'));
+  items.forEach((el,i)=>{if(!el.dataset.widgetKey)el.dataset.widgetKey=el.id||sid+'-item-'+i});
+  const saved=order[sid];if(Array.isArray(saved)){
+   const byKey=new Map(items.map(el=>[el.dataset.widgetKey,el]));
+   // Reorder only direct widget elements, keep toolbar at the beginning.
+   const ordered=[...saved.map(k=>byKey.get(k)).filter(Boolean),...items.filter(x=>!saved.includes(x.dataset.widgetKey))];
+   ordered.forEach(el=>section.appendChild(el));
+  }
+ }
+ moveToolbarsToBottom();
+ updateLabels();
+}
+function updateLabels(){updateCompactLabels();document.querySelectorAll('[data-layout-toggle]').forEach(b=>b.textContent=(zh()?'调整位置':'Reorder')+' ⇅');}
+document.addEventListener('click',e=>{
+ const toggle=e.target.closest('[data-layout-toggle]');if(toggle){const section=toggle.closest('section,#profileOverview');if(!section)return;section.classList.toggle('layout-editing');toggle.textContent=section.classList.contains('layout-editing')?(zh()?'完成':'Done'):(zh()?'调整位置 ⇅':'Reorder ⇅');return;}
+ const btn=e.target.closest('[data-move]');if(!btn)return;
+ const item=btn.closest('.layout-movable'),parent=item&&item.parentElement;if(!parent)return;
+ const items=Array.from(parent.children).filter(x=>x.classList.contains('layout-movable'));
+ const idx=items.indexOf(item),dir=btn.dataset.move;
+ if(dir==='up'&&idx>0)parent.insertBefore(item,items[idx-1]);
+ else if(dir==='down'&&idx>=0&&idx<items.length-1)parent.insertBefore(items[idx+1],item);
+ order[parent.id]=Array.from(parent.children).filter(x=>x.classList.contains('layout-movable')).map(x=>x.dataset.widgetKey);
+ try{localStorage.setItem(ORDER_KEY,JSON.stringify(order))}catch(e){}
+});
+const obs=new MutationObserver(updateLabels);obs.observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+init();
+})();
+</script>
+<style id="menu-edit-polish">
+#bowelList .item{display:flex;align-items:center;gap:10px;width:100%}
+#bowelList .item>div:first-child{flex:1;min-width:0}
+#bowelList .item>.item-menu{margin-left:auto;flex-shrink:0}
+.item-menu>summary{touch-action:manipulation}
+.record-edit-actions{display:flex;gap:10px;align-items:center;margin-top:12px}
+.record-edit-actions .secondary{flex:1;padding:11px 8px}
+</style>
+<script>
+function cancelRecordEdit(type){const config={exercises:['exerciseForm','exerciseCancel','exerciseSave'],body:['bodyForm','bodyCancel','bodySave'],bowels:['bowelForm','bowelCancel','bowelSave']}[type];if(!config)return;const [form,cancel,save]=config;document.getElementById(form).reset();document.getElementById(cancel).classList.add('hide');document.getElementById(save).textContent=(state.lang==='zh'?{exercises:'＋ 保存运动',body:'＋ 保存一条身体记录',bowels:'＋ 保存排便记录'}:{exercises:'＋ Save Exercise',body:'＋ Save Body Measurements',bowels:'＋ Save Bowel Log'})[type];if(type==='exercises')editExercise=null;if(type==='body')editBody=null;if(type==='bowels')editBowel=null;}
+function beginRecordEdit(type,id){const config={exercises:['exerciseForm','exerciseCancel','exerciseSave','exercises'],body:['bodyForm','bodyCancel','bodySave','body'],bowels:['bowelForm','bowelCancel','bowelSave','bowels']}[type];if(!config)return;const [formId,cancelId,saveId,key]=config;const item=state[key].find(x=>x.id===id);if(!item)return;cancelRecordEdit(type);if(type==='exercises')editExercise=id;if(type==='body')editBody=id;if(type==='bowels')editBowel=id;const form=document.getElementById(formId);for(const input of form.querySelectorAll('[name]'))input.value=item[input.name]??'';document.getElementById(cancelId).classList.remove('hide');document.getElementById(saveId).textContent=state.lang==='zh'?'保存修改':'Save Changes';form.scrollIntoView({behavior:'smooth',block:'center'});}
+function editExerciseEntry(id){beginRecordEdit('exercises',id)}
+function editBodyEntry(id){beginRecordEdit('body',id)}
+function editBowelEntry(id){beginRecordEdit('bowels',id)}
+// Keep only one record menu open; dismiss on outside taps and Escape.
+document.addEventListener('click',function(e){const summary=e.target.closest('.item-menu > summary');if(summary){const current=summary.parentElement;document.querySelectorAll('.item-menu[open]').forEach(d=>{if(d!==current)d.open=false});return;}if(!e.target.closest('.item-menu'))document.querySelectorAll('.item-menu[open]').forEach(d=>d.open=false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')document.querySelectorAll('.item-menu[open]').forEach(d=>d.open=false)});
+</script>
+<script id="date-arrow-handler-v2">document.getElementById('dateArrowV2')?.addEventListener('click',function(){const el=document.getElementById('day');if(!el)return;try{if(typeof el.showPicker==='function'){el.showPicker();return;}}catch(e){}el.focus();el.click();});</script><script id="date-visible-sync-v3">(function(){const d=document.getElementById('day'),label=document.getElementById('dateVisibleV3');if(!d||!label)return;const sync=()=>{if(d.value)label.textContent=d.value.replace(/-/g,'/');};d.addEventListener('change',sync);d.addEventListener('input',sync);const observer=new MutationObserver(sync);observer.observe(d,{attributes:true,attributeFilter:['value']});sync();requestAnimationFrame(sync);})();</script><div id="nutriAuthScreen" role="dialog" aria-modal="true" aria-label="NutriTrack 登录"><div class="nutri-auth-card"><div style="font-size:30px">✦</div><h2>NutriTrack V2</h2><p>使用 Google 登录，安全保存饮食、运动和身体记录，并在不同设备间同步。</p><button id="nutriGoogleBtn" type="button"><svg width="21" height="21" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.27 5.48-4.79 7.18l7.73 6C44.39 38.03 46.98 31.88 46.98 24.55z"/><path fill="#FBBC05" d="M10.53 28.59A14.41 14.41 0 0 1 9.75 24c0-1.59.27-3.13.76-4.59l-7.98-6.2A23.88 23.88 0 0 0 0 24c0 3.87.93 7.52 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.92-2.13 15.89-5.8l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.97 6.19C6.51 42.62 14.62 48 24 48z"/></svg>使用 Google 账号继续</button><div id="nutriAuthMessage">正在连接安全登录服务…</div></div></div><script id="nutri-cloud-integration">
+
+</script></body></html>

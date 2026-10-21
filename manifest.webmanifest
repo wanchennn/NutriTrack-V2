@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "NutriTrack V2 — Nutrition Tracker",
+  "short_name": "NutriTrack",
+  "description": "营养、运动和身体记录，支持 Google 登录与云端同步",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#f5f5f7",
+  "icons": [
+    {
+      "src": "/icon-192.png?v=correct-cat-20261021-v4",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png?v=correct-cat-20261021-v4",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable-512.png?v=correct-cat-20261021-v4",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
